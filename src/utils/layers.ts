@@ -12,7 +12,6 @@ import {
 import { type _ConstructorOf, Layer } from '@deck.gl/core';
 import { DataFilterExtension } from '@deck.gl/extensions';
 
-// For now, define here. Eventually LayerFactory will be available in @deck.gl/carto
 const layerClasses: Record<LayerType, _ConstructorOf<Layer>> = {
   clusterTile: ClusterTileLayer,
   h3: H3TileLayer,
@@ -23,6 +22,7 @@ const layerClasses: Record<LayerType, _ConstructorOf<Layer>> = {
   tileset: VectorTileLayer
 };
 
+// Courtesy of https://github.com/CartoDB/deck.gl-examples/blob/master/fetchmap/utils.ts
 export function layerFactory(layers: LayerDescriptor[]) {
   return layers
     .map(({ type, props, filters }) => {
