@@ -1,8 +1,11 @@
+import MainLayout from './layouts/MainLayout';
+import Map from './features/map/Map';
+
 function App() {
   return (
-    <div>
-      Empty.
-    </div>
+    <MainLayout>
+      <Map />
+    </MainLayout>
   )
 }
 
