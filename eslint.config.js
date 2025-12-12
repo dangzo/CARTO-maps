@@ -23,9 +23,12 @@ export default defineConfig([
       'react-refresh/only-export-components': 'warn',
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
+      //
+      'object-property-newline': 'warn',
       'object-curly-spacing': ['error', 'always'],
       'no-multi-spaces': 'error',
       'no-unused-vars': 'warn',
+      'no-unused-imports': 'warn',
       'no-console': 'warn',
       'indent': ['error', 2],
       'quotes': ['error', 'single'],

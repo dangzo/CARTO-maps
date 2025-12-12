@@ -1,5 +1,6 @@
 import { Box, Drawer } from '@mui/material';
 import type { ReactNode } from 'react';
+import ControlsDrawer from '@/features/controls-drawer/ControlsDrawer';
 
 const drawerWidth = 320;
 
@@ -32,9 +33,7 @@ export default function MainLayout({ children }: { children?: ReactNode }) {
           },
         }}
       >
-        <Box sx={{ p: 2 }}>
-          {/* Drawer content goes here */}
-        </Box>
+        <ControlsDrawer />
       </Drawer>
     </Box>
   );
