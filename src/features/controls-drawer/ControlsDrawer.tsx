@@ -17,7 +17,7 @@ export default function ControlsDrawer() {
 
       <LayerControls title="Layer 1: Retail Stores" layerIndex={0} />
 
-      <Divider flexItem />
+      <Divider flexItem sx={{ marginY: 1 }} />
 
       <LayerControls title="Layer 2: Tilemap" layerIndex={1} />
     </Box>

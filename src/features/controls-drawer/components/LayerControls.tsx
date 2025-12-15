@@ -17,10 +17,13 @@ import {
   updateLayerOutlineColor,
   updateLayerRadius,
   updateLayerFillBy,
+  updateLayerPalette,
 } from '@/store/slices/layerControlsSlice';
+import { PaletteSelector } from '@/components/PaletteSelector';
+import useLayerControls from './useLayerControls';
+import type { PaletteType } from '@/components/PaletteSelector.props';
 import type { SelectChangeEvent } from '@mui/material/Select';
 import type { LayerControlsProps } from './LayerControls.props';
-import useLayerControls from './useLayerControls';
 
 
 export const LayerControls = ({ title, layerIndex }: LayerControlsProps) => {
@@ -59,22 +62,69 @@ export const LayerControls = ({ title, layerIndex }: LayerControlsProps) => {
     );
   }
 
+  function onPaletteChange(palette: string) {
+    dispatch(
+      updateLayerPalette({ layerIndex, value: palette as PaletteType }),
+    );
+  }
+
   return (
-    <Box component="section" sx={{ display: 'flex',
-      flexDirection: 'column',
-      gap: 2 }}>
-      <Typography variant="subtitle1" fontWeight={600}>
+    <Box
+      component="section"
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 3,
+      }}
+    >
+      <Typography variant="subtitle1" fontWeight={600} sx={{ marginBottom: '14px' }}>
         {title}
       </Typography>
 
-      <TextField
-        label="Fill color"
-        type="color"
-        value={layerStyle.fillColor}
-        onChange={onFillColorChange}
+      <FormControl
         size="small"
         fullWidth
-      />
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 1.5,
+        }}
+      >
+        <InputLabel id={selectId}>Fill by</InputLabel>
+        <Select
+          labelId={selectId}
+          value={layerStyle.fillBy}
+          label="Fill by"
+          onChange={onFillByChange}
+        >
+          {fillByOptions.map(option => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </Select>
+
+        {layerStyle.fillBy === 'solid_color' ? (
+          <TextField
+            label="Fill color"
+            type="color"
+            value={layerStyle.fillColor}
+            onChange={onFillColorChange}
+            size="small"
+            fullWidth
+          />
+        ) : (
+          <Box>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+              Color palette
+            </Typography>
+            <PaletteSelector
+              value={layerStyle.palette}
+              onChange={onPaletteChange}
+            />
+          </Box>
+        )}
+      </FormControl>
 
       <Stack spacing={1}>
         <Typography variant="body2" color="text.secondary">
@@ -114,22 +164,6 @@ export const LayerControls = ({ title, layerIndex }: LayerControlsProps) => {
           valueLabelDisplay="auto"
         />
       </Stack>
-
-      <FormControl size="small" fullWidth>
-        <InputLabel id={selectId}>Fill by</InputLabel>
-        <Select
-          labelId={selectId}
-          value={layerStyle.fillBy}
-          label="Fill by"
-          onChange={onFillByChange}
-        >
-          {fillByOptions.map(option => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
     </Box>
   );
 };

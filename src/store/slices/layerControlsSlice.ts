@@ -1,5 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { LayerStyle, LayerControlsState, UpdatePayload } from './layerControlsSlice.props';
+import type { PaletteType } from '@/components/PaletteSelector.props';
 
 export const INITIAL_LAYER_1_STYLE: LayerStyle = {
   fillColor: '#4caf50',
@@ -7,6 +8,7 @@ export const INITIAL_LAYER_1_STYLE: LayerStyle = {
   outlineColor: '#1b5e20',
   radius: 2,
   fillBy: 'solid_color',
+  palette: 'yellow',
 };
 
 export const INITIAL_LAYER_2_STYLE: LayerStyle = {
@@ -15,6 +17,7 @@ export const INITIAL_LAYER_2_STYLE: LayerStyle = {
   outlineColor: '#5b1e50',
   radius: 2,
   fillBy: 'solid_color',
+  palette: 'yellow',
 };
 
 const initialState: LayerControlsState = {
@@ -40,6 +43,9 @@ const layerControlsSlice = createSlice({
     updateLayerFillBy: (state, action: PayloadAction<UpdatePayload<string>>) => {
       state.layers[action.payload.layerIndex].fillBy = action.payload.value;
     },
+    updateLayerPalette: (state, action: PayloadAction<UpdatePayload<PaletteType>>) => {
+      state.layers[action.payload.layerIndex].palette = action.payload.value;
+    },
   },
 });
 
@@ -49,6 +55,7 @@ export const {
   updateLayerOutlineColor,
   updateLayerRadius,
   updateLayerFillBy,
+  updateLayerPalette,
 } = layerControlsSlice.actions;
 
 export default layerControlsSlice.reducer;

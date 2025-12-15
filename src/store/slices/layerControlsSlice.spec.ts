@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import type { LayerControlsState } from './layerControlsSlice.props';
-import layerControlsReducer from './layerControlsSlice';
+import layerControlsReducer, { updateLayerPalette } from './layerControlsSlice';
 import {
   updateLayerFillColor,
   updateLayerOutlineSize,
@@ -66,6 +66,18 @@ describe('layerControlsSlice', () => {
     );
     expect(state.layers[0].fillBy).toBe('population');
     expect(state.layers[1].fillBy).toBe(INITIAL_LAYER_2_STYLE.fillBy);
+  });
+
+  it('should update layer palette', () => {
+    const state = layerControlsReducer(
+      initialState,
+      updateLayerPalette({
+        layerIndex: 1,
+        value: 'red',
+      })
+    );
+    expect(state.layers[1].palette).toBe('red');
+    expect(state.layers[0].palette).toBe(INITIAL_LAYER_1_STYLE.palette);
   });
 
   it('should handle multiple updates independently', () => {
