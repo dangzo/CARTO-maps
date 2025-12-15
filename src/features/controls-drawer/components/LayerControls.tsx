@@ -18,6 +18,7 @@ import {
   updateLayerRadius,
   updateLayerFillBy,
 } from '@/store/slices/layerControlsSlice';
+import type { SelectChangeEvent } from '@mui/material/Select';
 
 const metricOptions = [
   { value: 'revenue', label: 'Revenue (retail_stores)' },
@@ -35,6 +36,26 @@ export const LayerControls = ({ title, layerIndex }: LayerControlsProps) => {
 
   const layerStyle = useAppSelector(state => state.layerControls.layers[layerIndex]);
 
+  function onFillColorChange(event: React.ChangeEvent<HTMLInputElement>) {
+    dispatch(updateLayerFillColor({ layerIndex, value: event.target.value }));
+  }
+
+  function onOutlineColorChange(event: React.ChangeEvent<HTMLInputElement>) {
+    dispatch(updateLayerOutlineColor({ layerIndex, value: event.target.value }));
+  }
+
+  function onOutlineSizeChange(_event: Event, value: number | number[]) {
+    dispatch(updateLayerOutlineSize({ layerIndex, value: typeof value === 'number' ? value : value[0] }));
+  }
+
+  function onRadiusChange(_event: Event, value: number | number[]) {
+    dispatch(updateLayerRadius({ layerIndex, value: typeof value === 'number' ? value : value[0] }));
+  }
+
+  function onFillByChange(event: SelectChangeEvent<string>) {
+    dispatch(updateLayerFillBy({ layerIndex, value: event.target.value as string }));
+  }
+
   return (
     <Box component="section" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
       <Typography variant="subtitle1" fontWeight={600}>
@@ -42,10 +63,10 @@ export const LayerControls = ({ title, layerIndex }: LayerControlsProps) => {
       </Typography>
 
       <TextField
-        label="Fill color"
+        aria-label="Fill color"
         type="color"
         value={layerStyle.fillColor}
-        onChange={(e) => dispatch(updateLayerFillColor({ layerIndex, value: e.target.value }))}
+        onChange={onFillColorChange}
         size="small"
         fullWidth
       />
@@ -56,7 +77,7 @@ export const LayerControls = ({ title, layerIndex }: LayerControlsProps) => {
         </Typography>
         <Slider
           value={layerStyle.outlineSize}
-          onChange={(_, value) => dispatch(updateLayerOutlineSize({ layerIndex, value: value as number }))}
+          onChange={onOutlineSizeChange}
           step={0.5}
           min={0}
           max={10}
@@ -65,10 +86,10 @@ export const LayerControls = ({ title, layerIndex }: LayerControlsProps) => {
       </Stack>
 
       <TextField
-        label="Outline color"
+        aria-label="Outline color"
         type="color"
         value={layerStyle.outlineColor}
-        onChange={(e) => dispatch(updateLayerOutlineColor({ layerIndex, value: e.target.value }))}
+        onChange={onOutlineColorChange}
         size="small"
         fullWidth
       />
@@ -79,7 +100,7 @@ export const LayerControls = ({ title, layerIndex }: LayerControlsProps) => {
         </Typography>
         <Slider
           value={layerStyle.radius}
-          onChange={(_, value) => dispatch(updateLayerRadius({ layerIndex, value: value as number }))}
+          onChange={onRadiusChange}
           step={1}
           min={0}
           max={50}
@@ -92,8 +113,8 @@ export const LayerControls = ({ title, layerIndex }: LayerControlsProps) => {
         <Select
           labelId={selectId}
           value={layerStyle.fillBy}
-          label="Fill by"
-          onChange={(e) => dispatch(updateLayerFillBy({ layerIndex, value: e.target.value }))}
+          aria-label="Fill by"
+          onChange={onFillByChange}
         >
           {metricOptions.map(option => (
             <MenuItem key={option.value} value={option.value}>
