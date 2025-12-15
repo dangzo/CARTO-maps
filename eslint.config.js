@@ -2,6 +2,7 @@ import js from '@eslint/js'
 import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
+import unusedImports from "eslint-plugin-unused-imports";
 import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
@@ -19,6 +20,9 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    plugins: {
+      'unused-imports': unusedImports,
+    },
     rules: {
       'react-refresh/only-export-components': 'warn',
       'react-hooks/rules-of-hooks': 'error',
@@ -27,8 +31,17 @@ export default defineConfig([
       'object-property-newline': 'warn',
       'object-curly-spacing': ['error', 'always'],
       'no-multi-spaces': 'error',
-      'no-unused-vars': 'warn',
-      'no-unused-imports': 'warn',
+      "no-unused-vars": "off", // or "@typescript-eslint/no-unused-vars": "off",
+        "unused-imports/no-unused-imports": "error",
+        "unused-imports/no-unused-vars": [
+            "warn",
+            {
+                "vars": "all",
+                "varsIgnorePattern": "^_",
+                "args": "after-used",
+                "argsIgnorePattern": "^_",
+            },
+        ],
       'no-console': 'warn',
       'indent': ['error', 2],
       'quotes': ['error', 'single'],
