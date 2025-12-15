@@ -12,7 +12,7 @@ export default function ControlsDrawer() {
 
       <Divider flexItem />
 
-      <LayerControls title="Layer 2: SocioDemographics" layerIndex={1} />
+      <LayerControls title="Layer 2: Tilemap" layerIndex={1} />
     </Box>
   );
 }

@@ -63,7 +63,7 @@ export const LayerControls = ({ title, layerIndex }: LayerControlsProps) => {
       </Typography>
 
       <TextField
-        aria-label="Fill color"
+        label="Fill color"
         type="color"
         value={layerStyle.fillColor}
         onChange={onFillColorChange}
@@ -76,6 +76,7 @@ export const LayerControls = ({ title, layerIndex }: LayerControlsProps) => {
 					Outline size
         </Typography>
         <Slider
+          aria-label='Outline size'
           value={layerStyle.outlineSize}
           onChange={onOutlineSizeChange}
           step={0.5}
@@ -86,7 +87,7 @@ export const LayerControls = ({ title, layerIndex }: LayerControlsProps) => {
       </Stack>
 
       <TextField
-        aria-label="Outline color"
+        label="Outline color"
         type="color"
         value={layerStyle.outlineColor}
         onChange={onOutlineColorChange}
@@ -99,6 +100,7 @@ export const LayerControls = ({ title, layerIndex }: LayerControlsProps) => {
 					Radius
         </Typography>
         <Slider
+          aria-label='Radius'
           value={layerStyle.radius}
           onChange={onRadiusChange}
           step={1}
@@ -113,7 +115,7 @@ export const LayerControls = ({ title, layerIndex }: LayerControlsProps) => {
         <Select
           labelId={selectId}
           value={layerStyle.fillBy}
-          aria-label="Fill by"
+          label="Fill by"
           onChange={onFillByChange}
         >
           {metricOptions.map(option => (
