@@ -26,7 +26,9 @@ export function renderWithProviders(
     );
   }
 
-  return { ...render(ui, { wrapper: Wrapper, ...renderOptions }), store };
+  return { ...render(ui, { wrapper: Wrapper,
+    ...renderOptions }),
+  store };
 }
 
 export function renderHookWithProviders<TProps, TResult>(
@@ -45,5 +47,6 @@ export function renderHookWithProviders<TProps, TResult>(
     );
   }
 
-  return renderHook(hook, { wrapper: Wrapper, ...renderOptions });
+  return renderHook(hook, { wrapper: Wrapper,
+    ...renderOptions });
 }

@@ -1,7 +1,8 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { VectorTileLayer } from '@deck.gl/carto';
 import { vectorTilesetSource, vectorTableSource } from '@carto/api-client';
-import { useAppSelector } from '@/store/hooks';
+import { useAppSelector, useAppDispatch } from '@/store/hooks';
+import { fetchDataSourceSchemas } from '@/store/slices/dataSourcesSlice';
 import { hexToRgb } from '@/utils/colors';
 
 export const INITIAL_VIEW_STATE = {
@@ -18,16 +19,31 @@ const {
 } = import.meta.env;
 
 export default function useCartoMap() {
+  const dispatch = useAppDispatch();
   const retailStoreStyles = useAppSelector(state => state.layerControls.layers[0]);
   const socioDemographicsStyles = useAppSelector(state => state.layerControls.layers[1]);
 
-  // Stable data sources (do not change with styles)
+  // Data sources (memoized to avoid recreation on each render)
   const retailStoresData = useMemo(() => vectorTableSource({
     apiBaseUrl,
     accessToken,
     connectionName: 'carto_dw',
     tableName: 'carto-demo-data.demo_tables.retail_stores',
   }), []);
+  const socioDemographicsData = useMemo(() => vectorTilesetSource({
+    apiBaseUrl,
+    accessToken,
+    connectionName: 'carto_dw',
+    tableName: 'carto-demo-data.demo_tilesets.sociodemographics_usa_blockgroup',
+  }), []);
+
+  // Fetch schemas once data sources are available
+  useEffect(() => {
+    dispatch(fetchDataSourceSchemas({
+      retailStoresData,
+      socioDemographicsData,
+    }));
+  }, [dispatch, retailStoresData, socioDemographicsData]);
 
   // Retail Stores data layer (recreate only when style inputs change)
   const retailStoresLayer = useMemo(() => new VectorTileLayer({
@@ -44,14 +60,6 @@ export default function useCartoMap() {
     retailStoreStyles.outlineSize,
     retailStoreStyles.radius
   ]);
-
-  // Stable tileset source
-  const socioDemographicsData = useMemo(() => vectorTilesetSource({
-    apiBaseUrl,
-    accessToken,
-    connectionName: 'carto_dw',
-    tableName: 'carto-demo-data.demo_tilesets.sociodemographics_usa_blockgroup',
-  }), []);
 
   // SocioDemographics tileset layer (recreate only when style inputs change)
   const socioDemographicsLayer = useMemo(() => new VectorTileLayer({
@@ -70,6 +78,8 @@ export default function useCartoMap() {
   ]);
 
   return {
+    socioDemographicsData,
+    retailStoresData,
     initialViewState: INITIAL_VIEW_STATE,
     layers: [
       socioDemographicsLayer,

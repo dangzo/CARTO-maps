@@ -1,0 +1,75 @@
+import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit';
+import type { DataSourceSchema, DataSourcesState, CreateAsyncThunkProps } from './dataSourcesSlice.props';
+
+
+const initialState: DataSourcesState = {
+  retailStoresSchema: null,
+  socioDemographicsSchema: null,
+  loading: false,
+  error: null,
+};
+
+export const fetchDataSourceSchemas = createAsyncThunk(
+  'dataSources/fetchSchemas',
+  async (
+    {
+      retailStoresData,
+      socioDemographicsData,
+    }: CreateAsyncThunkProps,
+    { rejectWithValue }
+  ) => {
+    try {
+      const [retailStores, socioDemographics] = await Promise.all([
+        retailStoresData,
+        socioDemographicsData,
+      ]);
+
+      return {
+        retailStoresSchema: retailStores.schema || null,
+        socioDemographicsSchema: socioDemographics.schema || null,
+      };
+    } catch (error) {
+      return rejectWithValue((error as Error).message);
+    }
+  }
+);
+
+const dataSourcesSlice = createSlice({
+  name: 'dataSources',
+  initialState,
+  reducers: {
+    resetSchemas: (state) => {
+      state.retailStoresSchema = null;
+      state.socioDemographicsSchema = null;
+      state.error = null;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchDataSourceSchemas.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        fetchDataSourceSchemas.fulfilled,
+        (
+          state,
+          action: PayloadAction<{
+            retailStoresSchema: DataSourceSchema | null;
+            socioDemographicsSchema: DataSourceSchema | null;
+          }>
+        ) => {
+          state.loading = false;
+          state.retailStoresSchema = action.payload.retailStoresSchema;
+          state.socioDemographicsSchema = action.payload.socioDemographicsSchema;
+        }
+      )
+      .addCase(fetchDataSourceSchemas.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
+  },
+});
+
+export const { resetSchemas } = dataSourcesSlice.actions;
+export default dataSourcesSlice.reducer;

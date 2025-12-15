@@ -21,8 +21,10 @@ import {
 import type { SelectChangeEvent } from '@mui/material/Select';
 
 const metricOptions = [
-  { value: 'revenue', label: 'Revenue (retail_stores)' },
-  { value: 'population', label: 'Population (sociodemographics)' }
+  { value: 'revenue',
+    label: 'Revenue (retail_stores)' },
+  { value: 'population',
+    label: 'Population (sociodemographics)' }
 ];
 
 export interface LayerControlsProps {
@@ -37,27 +39,34 @@ export const LayerControls = ({ title, layerIndex }: LayerControlsProps) => {
   const layerStyle = useAppSelector(state => state.layerControls.layers[layerIndex]);
 
   function onFillColorChange(event: React.ChangeEvent<HTMLInputElement>) {
-    dispatch(updateLayerFillColor({ layerIndex, value: event.target.value }));
+    dispatch(updateLayerFillColor({ layerIndex,
+      value: event.target.value }));
   }
 
   function onOutlineColorChange(event: React.ChangeEvent<HTMLInputElement>) {
-    dispatch(updateLayerOutlineColor({ layerIndex, value: event.target.value }));
+    dispatch(updateLayerOutlineColor({ layerIndex,
+      value: event.target.value }));
   }
 
   function onOutlineSizeChange(_event: Event, value: number | number[]) {
-    dispatch(updateLayerOutlineSize({ layerIndex, value: typeof value === 'number' ? value : value[0] }));
+    dispatch(updateLayerOutlineSize({ layerIndex,
+      value: typeof value === 'number' ? value : value[0] }));
   }
 
   function onRadiusChange(_event: Event, value: number | number[]) {
-    dispatch(updateLayerRadius({ layerIndex, value: typeof value === 'number' ? value : value[0] }));
+    dispatch(updateLayerRadius({ layerIndex,
+      value: typeof value === 'number' ? value : value[0] }));
   }
 
   function onFillByChange(event: SelectChangeEvent<string>) {
-    dispatch(updateLayerFillBy({ layerIndex, value: event.target.value as string }));
+    dispatch(updateLayerFillBy({ layerIndex,
+      value: event.target.value as string }));
   }
 
   return (
-    <Box component="section" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+    <Box component="section" sx={{ display: 'flex',
+      flexDirection: 'column',
+      gap: 2 }}>
       <Typography variant="subtitle1" fontWeight={600}>
         {title}
       </Typography>
@@ -127,4 +136,4 @@ export const LayerControls = ({ title, layerIndex }: LayerControlsProps) => {
       </FormControl>
     </Box>
   );
-}
+};

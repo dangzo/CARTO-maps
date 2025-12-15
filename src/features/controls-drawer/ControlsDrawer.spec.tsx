@@ -1,7 +1,7 @@
-import ControlsDrawer from "./ControlsDrawer";
+import ControlsDrawer from './ControlsDrawer';
 import { screen, within } from '@testing-library/react';
-import { setupStore } from "@/store";
-import { renderWithProviders } from "@/utils/test-utils";
+import { setupStore } from '@/store';
+import { renderWithProviders } from '@/utils/test-utils';
 
 const layer1InitialState = {
   fillColor: '#4caf50',
