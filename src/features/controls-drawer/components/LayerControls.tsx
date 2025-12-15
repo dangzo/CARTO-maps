@@ -10,12 +10,15 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import type { LayerControlsProps } from './LayerControls.props';
 
 const metricOptions = [
   { value: 'revenue', label: 'Revenue (retail_stores)' },
   { value: 'population', label: 'Population (sociodemographics)' }
 ];
+
+export interface LayerControlsProps {
+  title: string;
+}
 
 export const LayerControls = ({ title }: LayerControlsProps) => {
   const selectId = `${title.toLowerCase().replace(/\s+/g, '-')}-fill-by`;

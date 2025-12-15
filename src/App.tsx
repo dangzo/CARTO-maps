@@ -1,10 +1,14 @@
 import MainLayout from './layouts/MainLayout';
 import CartoMap from '@/features/map/CartoMap';
+import ControlsDrawer from '@/features/controls-drawer/ControlsDrawer';
 
 function App() {
   return (
     <MainLayout>
-      <CartoMap />
+      {{
+        main: <CartoMap />,
+        drawer: <ControlsDrawer />
+      }}
     </MainLayout>
   );
 }
