@@ -19,11 +19,10 @@ export const PaletteSelector = ({ value, onChange }: PaletteSelectorProps) => {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        gap: 0.5,
         '& .MuiToggleButtonGroup-grouped': {
           margin: 0,
           border: 'none',
-          borderRadius: '4px',
+          borderRadius: '0',
         },
       }}
     >
@@ -34,27 +33,21 @@ export const PaletteSelector = ({ value, onChange }: PaletteSelectorProps) => {
           value={paletteName}
           sx={{
             display: 'flex',
-            gap: 0.5,
             justifyContent: 'flex-start',
-            borderRadius: '4px',
             padding: '8px',
             '&.Mui-selected': {
-              backgroundColor: '#e6e5e5ff',
-              '&:hover': {
-                backgroundColor: '#d6d5d5ff',
-              },
+              backgroundColor: '#dadad5af',
             },
             '&:hover': {
-              backgroundColor: '#fafafa',
+              backgroundColor: '#dadad5af',
             },
           }}
         >
           <Stack
             direction="row"
-            spacing={0.3}
             sx={{
               flex: 1,
-              minHeight: '21px',
+              minHeight: '24px',
             }}
           >
             {colors.map((color, idx) => (
@@ -64,8 +57,6 @@ export const PaletteSelector = ({ value, onChange }: PaletteSelectorProps) => {
                 sx={{
                   flex: 1,
                   backgroundColor: color,
-                  borderRadius: '3px',
-                  border: '1px solid rgba(0, 0, 0, 0.1)',
                   minWidth: '20px',
                 }}
               />
