@@ -8,11 +8,11 @@ export default function ControlsDrawer() {
 				Controls
       </Typography>
 
-      <LayerControls title="Layer 1: Retail Stores" />
+      <LayerControls title="Layer 1: Retail Stores" layerIndex={0} />
 
       <Divider flexItem />
 
-      <LayerControls title="Layer 2: SocioDemographics" />
+      <LayerControls title="Layer 2: SocioDemographics" layerIndex={1} />
     </Box>
   );
 }

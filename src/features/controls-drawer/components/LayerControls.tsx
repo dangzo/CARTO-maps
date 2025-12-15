@@ -10,6 +10,14 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import {
+  updateLayerFillColor,
+  updateLayerOutlineSize,
+  updateLayerOutlineColor,
+  updateLayerRadius,
+  updateLayerFillBy,
+} from '@/store/slices/layerControlsSlice';
 
 const metricOptions = [
   { value: 'revenue', label: 'Revenue (retail_stores)' },
@@ -18,10 +26,14 @@ const metricOptions = [
 
 export interface LayerControlsProps {
   title: string;
+  layerIndex: 0 | 1;
 }
 
-export const LayerControls = ({ title }: LayerControlsProps) => {
+export const LayerControls = ({ title, layerIndex }: LayerControlsProps) => {
+  const dispatch = useAppDispatch();
   const selectId = `${title.toLowerCase().replace(/\s+/g, '-')}-fill-by`;
+
+  const layerStyle = useAppSelector(state => state.layerControls.layers[layerIndex]);
 
   return (
     <Box component="section" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -32,7 +44,8 @@ export const LayerControls = ({ title }: LayerControlsProps) => {
       <TextField
         label="Fill color"
         type="color"
-        defaultValue="#4caf50"
+        value={layerStyle.fillColor}
+        onChange={(e) => dispatch(updateLayerFillColor({ layerIndex, value: e.target.value }))}
         size="small"
         fullWidth
       />
@@ -41,13 +54,21 @@ export const LayerControls = ({ title }: LayerControlsProps) => {
         <Typography variant="body2" color="text.secondary">
 					Outline size
         </Typography>
-        <Slider defaultValue={1} step={0.5} min={0} max={10} valueLabelDisplay="auto" />
+        <Slider
+          value={layerStyle.outlineSize}
+          onChange={(_, value) => dispatch(updateLayerOutlineSize({ layerIndex, value: value as number }))}
+          step={0.5}
+          min={0}
+          max={10}
+          valueLabelDisplay="auto"
+        />
       </Stack>
 
       <TextField
         label="Outline color"
         type="color"
-        defaultValue="#1b5e20"
+        value={layerStyle.outlineColor}
+        onChange={(e) => dispatch(updateLayerOutlineColor({ layerIndex, value: e.target.value }))}
         size="small"
         fullWidth
       />
@@ -56,12 +77,24 @@ export const LayerControls = ({ title }: LayerControlsProps) => {
         <Typography variant="body2" color="text.secondary">
 					Radius
         </Typography>
-        <Slider defaultValue={12} step={1} min={0} max={50} valueLabelDisplay="auto" />
+        <Slider
+          value={layerStyle.radius}
+          onChange={(_, value) => dispatch(updateLayerRadius({ layerIndex, value: value as number }))}
+          step={1}
+          min={0}
+          max={50}
+          valueLabelDisplay="auto"
+        />
       </Stack>
 
       <FormControl size="small" fullWidth>
         <InputLabel id={selectId}>Fill by</InputLabel>
-        <Select labelId={selectId} defaultValue="revenue" label="Fill by">
+        <Select
+          labelId={selectId}
+          value={layerStyle.fillBy}
+          label="Fill by"
+          onChange={(e) => dispatch(updateLayerFillBy({ layerIndex, value: e.target.value }))}
+        >
           {metricOptions.map(option => (
             <MenuItem key={option.value} value={option.value}>
               {option.label}
