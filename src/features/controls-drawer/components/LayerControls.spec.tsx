@@ -77,8 +77,6 @@ describe('LayerControls', () => {
       expect(outlineSizeSlider).toHaveValue(newOutlineSize.toString());
     });
 
-
-
     it('should update outline color on change', () => {
       const layerIndex = 0;
       const title = 'Layer 1: Retail Stores';

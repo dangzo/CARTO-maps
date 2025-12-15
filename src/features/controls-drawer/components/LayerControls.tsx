@@ -10,8 +10,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useMemo } from 'react';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { useAppDispatch } from '@/store/hooks';
 import {
   updateLayerFillColor,
   updateLayerOutlineSize,
@@ -20,42 +19,15 @@ import {
   updateLayerFillBy,
 } from '@/store/slices/layerControlsSlice';
 import type { SelectChangeEvent } from '@mui/material/Select';
-import type { LayerControlsProps, FillBySelectItem } from './LayerControls.props';
+import type { LayerControlsProps } from './LayerControls.props';
+import useLayerControls from './useLayerControls';
 
 
 export const LayerControls = ({ title, layerIndex }: LayerControlsProps) => {
   const dispatch = useAppDispatch();
   const selectId = `${title.toLowerCase().replace(/\s+/g, '-')}-fill-by`;
 
-  const layerStyle = useAppSelector(state => state.layerControls.layers[layerIndex]);
-  const layerSchema = useAppSelector(state => {
-    const dataSources = state.dataSources;
-    return layerIndex === 0
-      ? dataSources.retailStoresSchema
-      : dataSources.socioDemographicsSchema;
-  });
-
-  // An array of options for the "Fill by" select input
-  // generated from the layer schema fields
-  const fillByOptions = useMemo(() => {
-    const solidColorOption: FillBySelectItem[] = [
-      {
-        value: 'solid_color',
-        label: 'Solid color',
-      }
-    ];
-
-    if (!layerSchema) {
-      return solidColorOption;
-    }
-
-    const metricFields = layerSchema.map((field) => ({
-      value: field.name,
-      label: `${field.name.charAt(0).toUpperCase() + field.name.slice(1)} (${field.type})`,
-    }));
-
-    return [...solidColorOption, ...metricFields];
-  }, [layerSchema]);
+  const { layerStyle, fillByOptions } = useLayerControls(layerIndex);
 
   function onFillColorChange(event: React.ChangeEvent<HTMLInputElement>) {
     dispatch(

@@ -3,10 +3,14 @@ import { Box, Divider, Typography } from '@mui/material';
 
 export default function ControlsDrawer() {
   return (
-    <Box sx={{ display: 'flex',
-      flexDirection: 'column',
-      gap: 3,
-      p: 2 }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 3,
+        p: 2,
+      }}
+    >
       <Typography variant="h6" fontWeight={700}>
 				Controls
       </Typography>
