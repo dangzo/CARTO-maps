@@ -1,24 +1,24 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { LayerStyle, LayerControlsState, UpdatePayload } from './layerControlsSlice.props';
 
-const initialLayer1Style: LayerStyle = {
+export const INITIAL_LAYER_1_STYLE: LayerStyle = {
   fillColor: '#4caf50',
   outlineSize: 1,
   outlineColor: '#1b5e20',
-  radius: 4,
+  radius: 2,
   fillBy: 'revenue',
 };
 
-const initialLayer2Style: LayerStyle = {
+export const INITIAL_LAYER_2_STYLE: LayerStyle = {
   fillColor: '#fcac50',
   outlineSize: 1,
   outlineColor: '#5b1e50',
-  radius: 4,
+  radius: 2,
   fillBy: 'revenue',
 };
 
 const initialState: LayerControlsState = {
-  layers: [initialLayer1Style, initialLayer2Style],
+  layers: [INITIAL_LAYER_1_STYLE, INITIAL_LAYER_2_STYLE],
 };
 
 const layerControlsSlice = createSlice({
