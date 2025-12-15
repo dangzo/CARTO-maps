@@ -70,6 +70,7 @@ export default function useCartoMap() {
   ]);
 
   return {
+    initialViewState: INITIAL_VIEW_STATE,
     layers: [
       socioDemographicsLayer,
       retailStoresLayer,

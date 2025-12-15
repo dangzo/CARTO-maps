@@ -1,6 +1,6 @@
 import React, { type ReactNode } from 'react';
 import { Provider } from 'react-redux';
-import { render, type RenderOptions } from '@testing-library/react';
+import { render, renderHook, type RenderOptions, type RenderHookOptions } from '@testing-library/react';
 import { configureStore } from '@reduxjs/toolkit';
 import type { RootState } from '@/store';
 import { setupStore } from '@/store';
@@ -27,4 +27,23 @@ export function renderWithProviders(
   }
 
   return { ...render(ui, { wrapper: Wrapper, ...renderOptions }), store };
+}
+
+export function renderHookWithProviders<TProps, TResult>(
+  hook: (props: TProps) => TResult,
+  {
+    preloadedState = {},
+    store = setupStore(preloadedState),
+    ...renderOptions
+  }: ExtendedRenderOptions & RenderHookOptions<TProps> = {}
+) {
+  function Wrapper({ children }: { children: ReactNode }) {
+    return (
+      <Provider store={store}>
+        {children}
+      </Provider>
+    );
+  }
+
+  return renderHook(hook, { wrapper: Wrapper, ...renderOptions });
 }
