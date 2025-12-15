@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit';
 import type { DataSourceSchema, DataSourcesState, CreateAsyncThunkProps } from './dataSourcesSlice.props';
+import type { VectorTilesetSourceResponse } from '@carto/api-client';
 
 
 const initialState: DataSourcesState = {
@@ -9,15 +10,16 @@ const initialState: DataSourcesState = {
   error: null,
 };
 
+// Helper to extract schema from tilestats response
+const getTilestatsMainLayerSchema = (data: VectorTilesetSourceResponse) => {
+  return data.tilestats?.layers?.[0]?.attributes;
+}
+
 export const fetchDataSourceSchemas = createAsyncThunk(
   'dataSources/fetchSchemas',
-  async (
-    {
-      retailStoresData,
-      socioDemographicsData,
-    }: CreateAsyncThunkProps,
-    { rejectWithValue }
-  ) => {
+  async ({ retailStoresData, socioDemographicsData }: CreateAsyncThunkProps, {
+    rejectWithValue,
+  }) => {
     try {
       const [retailStores, socioDemographics] = await Promise.all([
         retailStoresData,
@@ -26,7 +28,7 @@ export const fetchDataSourceSchemas = createAsyncThunk(
 
       return {
         retailStoresSchema: retailStores.schema || null,
-        socioDemographicsSchema: socioDemographics.schema || null,
+        socioDemographicsSchema: getTilestatsMainLayerSchema(socioDemographics) || null,
       };
     } catch (error) {
       return rejectWithValue((error as Error).message);
