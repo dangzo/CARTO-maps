@@ -6,7 +6,7 @@ export const INITIAL_LAYER_1_STYLE: LayerStyle = {
   outlineSize: 1,
   outlineColor: '#1b5e20',
   radius: 2,
-  fillBy: 'revenue',
+  fillBy: 'solid_color',
 };
 
 export const INITIAL_LAYER_2_STYLE: LayerStyle = {
@@ -14,7 +14,7 @@ export const INITIAL_LAYER_2_STYLE: LayerStyle = {
   outlineSize: 1,
   outlineColor: '#5b1e50',
   radius: 2,
-  fillBy: 'revenue',
+  fillBy: 'solid_color',
 };
 
 const initialState: LayerControlsState = {

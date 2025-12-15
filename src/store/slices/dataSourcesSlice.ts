@@ -1,6 +1,6 @@
-import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit';
-import type { DataSourceSchema, DataSourcesState, CreateAsyncThunkProps } from './dataSourcesSlice.props';
-import type { VectorTilesetSourceResponse } from '@carto/api-client';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import type { DataSourcesState, CreateAsyncThunkProps } from './dataSourcesSlice.props';
+import type { VectorTilesetSourceResponse, SchemaField } from '@carto/api-client';
 
 
 const initialState: DataSourcesState = {
@@ -12,7 +12,12 @@ const initialState: DataSourcesState = {
 
 // Helper to extract schema from tilestats response
 const getTilestatsMainLayerSchema = (data: VectorTilesetSourceResponse) => {
-  return data.tilestats?.layers?.[0]?.attributes;
+  return data.tilestats?.layers?.[0]?.attributes?.map(field => {
+    return {
+      name: field.attribute,
+      type: field.type.toLowerCase(),
+    } as SchemaField;
+  });
 }
 
 export const fetchDataSourceSchemas = createAsyncThunk(
@@ -54,13 +59,7 @@ const dataSourcesSlice = createSlice({
       })
       .addCase(
         fetchDataSourceSchemas.fulfilled,
-        (
-          state,
-          action: PayloadAction<{
-            retailStoresSchema: DataSourceSchema | null;
-            socioDemographicsSchema: DataSourceSchema | null;
-          }>
-        ) => {
+        (state, action) => {
           state.loading = false;
           state.retailStoresSchema = action.payload.retailStoresSchema;
           state.socioDemographicsSchema = action.payload.socioDemographicsSchema;

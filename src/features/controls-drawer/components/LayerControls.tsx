@@ -10,6 +10,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import {
   updateLayerFillColor,
@@ -19,48 +20,71 @@ import {
   updateLayerFillBy,
 } from '@/store/slices/layerControlsSlice';
 import type { SelectChangeEvent } from '@mui/material/Select';
+import type { LayerControlsProps, FillBySelectItem } from './LayerControls.props';
 
-const metricOptions = [
-  { value: 'revenue',
-    label: 'Revenue (retail_stores)' },
-  { value: 'population',
-    label: 'Population (sociodemographics)' }
-];
-
-export interface LayerControlsProps {
-  title: string;
-  layerIndex: 0 | 1;
-}
 
 export const LayerControls = ({ title, layerIndex }: LayerControlsProps) => {
   const dispatch = useAppDispatch();
   const selectId = `${title.toLowerCase().replace(/\s+/g, '-')}-fill-by`;
 
   const layerStyle = useAppSelector(state => state.layerControls.layers[layerIndex]);
+  const layerSchema = useAppSelector(state => {
+    const dataSources = state.dataSources;
+    return layerIndex === 0
+      ? dataSources.retailStoresSchema
+      : dataSources.socioDemographicsSchema;
+  });
+
+  // An array of options for the "Fill by" select input
+  // generated from the layer schema fields
+  const fillByOptions = useMemo(() => {
+    const solidColorOption: FillBySelectItem[] = [
+      {
+        value: 'solid_color',
+        label: 'Solid color',
+      }
+    ];
+
+    if (!layerSchema) {
+      return solidColorOption;
+    }
+
+    const metricFields = layerSchema.map((field) => ({
+      value: field.name,
+      label: `${field.name.charAt(0).toUpperCase() + field.name.slice(1)} (${field.type})`,
+    }));
+
+    return [...solidColorOption, ...metricFields];
+  }, [layerSchema]);
 
   function onFillColorChange(event: React.ChangeEvent<HTMLInputElement>) {
-    dispatch(updateLayerFillColor({ layerIndex,
-      value: event.target.value }));
+    dispatch(
+      updateLayerFillColor({ layerIndex, value: event.target.value }),
+    );
   }
 
   function onOutlineColorChange(event: React.ChangeEvent<HTMLInputElement>) {
-    dispatch(updateLayerOutlineColor({ layerIndex,
-      value: event.target.value }));
+    dispatch(
+      updateLayerOutlineColor({ layerIndex, value: event.target.value }),
+    );
   }
 
   function onOutlineSizeChange(_event: Event, value: number | number[]) {
-    dispatch(updateLayerOutlineSize({ layerIndex,
-      value: typeof value === 'number' ? value : value[0] }));
+    dispatch(
+      updateLayerOutlineSize({ layerIndex, value: typeof value === 'number' ? value : value[0] }),
+    );
   }
 
   function onRadiusChange(_event: Event, value: number | number[]) {
-    dispatch(updateLayerRadius({ layerIndex,
-      value: typeof value === 'number' ? value : value[0] }));
+    dispatch(
+      updateLayerRadius({ layerIndex, value: typeof value === 'number' ? value : value[0] }),
+    );
   }
 
   function onFillByChange(event: SelectChangeEvent<string>) {
-    dispatch(updateLayerFillBy({ layerIndex,
-      value: event.target.value as string }));
+    dispatch(
+      updateLayerFillBy({ layerIndex, value: event.target.value as string }),
+    );
   }
 
   return (
@@ -127,7 +151,7 @@ export const LayerControls = ({ title, layerIndex }: LayerControlsProps) => {
           label="Fill by"
           onChange={onFillByChange}
         >
-          {metricOptions.map(option => (
+          {fillByOptions.map(option => (
             <MenuItem key={option.value} value={option.value}>
               {option.label}
             </MenuItem>

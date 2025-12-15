@@ -1,14 +1,8 @@
-import type { VectorTilesetSourceResponse, VectorTableSourceResponse } from '@carto/api-client';
-
-export interface DataSourceSchema {
-  fields?: Array<{ name: string; type: string }>;
-  // Using wildcard to match any other properties
-  [key: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-}
+import type { VectorTilesetSourceResponse, VectorTableSourceResponse, SchemaField } from '@carto/api-client';
 
 export interface DataSourcesState {
-  retailStoresSchema: DataSourceSchema | null;
-  socioDemographicsSchema: DataSourceSchema | null;
+  retailStoresSchema: SchemaField[] | null;
+  socioDemographicsSchema: SchemaField[] | null;
   loading: boolean;
   error: string | null;
 }

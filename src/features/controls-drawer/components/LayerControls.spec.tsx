@@ -7,7 +7,7 @@ const initialValues = {
   outlineSize: 1,
   outlineColor: '#1b5e20',
   radius: 2,
-  fillBy: 'Revenue (retail_stores)',
+  fillBy: 'Solid color',
 };
 
 describe('LayerControls', () => {

@@ -8,7 +8,7 @@ const layer1InitialState = {
   outlineSize: 1,
   outlineColor: '#1b5e20',
   radius: 2,
-  fillBy: 'Revenue (retail_stores)',
+  fillBy: 'Solid color',
 };
 
 const layer2InitialState = {
@@ -16,7 +16,7 @@ const layer2InitialState = {
   outlineSize: 1,
   outlineColor: '#5b1e50',
   radius: 2,
-  fillBy: 'Revenue (retail_stores)',
+  fillBy: 'Solid color',
 };
 
 describe('ControlsDrawer', () => {
