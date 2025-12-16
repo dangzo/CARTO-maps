@@ -6,7 +6,7 @@ export const continuousQuery = (attribute: string, tableName: string) => `
   WHERE ${attribute} IS NOT NULL
 `;
 
-export const binsQuery = (attribute: string, tableName: string, numBins: number = 6) => `
+export const binsQuery = (attribute: string, tableName: string, numBins: number = 5) => `
   SELECT
     APPROX_QUANTILES(${attribute}, ${numBins}) as bins
   FROM ${tableName}

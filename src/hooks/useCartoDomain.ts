@@ -1,38 +1,51 @@
 import { useEffect, useState } from 'react';
 import { fetchDomain } from '@/api/domains';
-import { continuousQuery, binsQuery } from '@/api/queries';
+import { continuousQuery, categoriesQuery, binsQuery } from '@/api/queries';
 import { storesSource } from '@/data/sources';
 import type { DomainModeType } from '@/api/domains';
+
+interface UseCartoDomainParams {
+  attr: string;
+  mode: DomainModeType;
+  bins?: number;
+  limit?: number;
+}
+
+export type DomainsType = Array<number | string>;
 
 export default function useCartoDomain({
   attr,
   mode,
-  bins = 5,
-}: {
-  attr: string;
-  mode: DomainModeType
-  bins?: number;
-}) {
-  const [domain, setDomain] = useState<Array<number>>([]);
+  bins = 6,
+  limit = 20,
+}: UseCartoDomainParams): DomainsType {
+  const [domain, setDomain] = useState<DomainsType>([]);
 
   useEffect(() => {
     const fetchDomainData = async () => {
-      if (!attr || attr === 'solid_color') {
-        return;
-      }
-
-      const query =
-        mode === 'continuous'
-          ? continuousQuery(attr, storesSource.tableName)
-          : binsQuery(attr, storesSource.tableName, bins);
+      let query = '';
 
       try {
+        if (mode === 'continuous') {
+          query = continuousQuery(attr, storesSource.tableName);
+        }
+        if (mode === 'bins') {
+          query = binsQuery(attr, storesSource.tableName, bins);
+        }
+        if (mode === 'categories') {
+          query = categoriesQuery(attr, storesSource.tableName, limit);
+        }
+
         const rows = await fetchDomain({ query });
         if (Array.isArray(rows) && rows.length > 0) {
           if (mode === 'continuous') {
             setDomain([rows[0].min, rows[0].max]);
-          } else {
+          }
+          if (mode === 'bins') {
             setDomain(rows[0].bins);
+          }
+          if (mode === 'categories') {
+            setDomain(rows[0].domain);
           }
         }
       } catch (error) {
@@ -42,7 +55,7 @@ export default function useCartoDomain({
     };
 
     fetchDomainData();
-  }, [attr, mode, bins]);
+  }, [attr, mode, bins, limit]);
 
   return domain;
 }
