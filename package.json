@@ -11,6 +11,7 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@carto/react-api": "^3.1.0-alpha.16",
     "@deck.gl/carto": "^9.2.5",
     "@deck.gl/core": "^9.2.5",
     "@deck.gl/extensions": "^9.2.5",

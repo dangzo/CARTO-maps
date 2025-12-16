@@ -167,7 +167,7 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.27.1"
 
-"@babel/runtime@^7.12.5", "@babel/runtime@^7.18.3", "@babel/runtime@^7.23.9", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.7":
+"@babel/runtime@^7.12.5", "@babel/runtime@^7.13.9", "@babel/runtime@^7.18.3", "@babel/runtime@^7.23.9", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.7":
   version "7.28.4"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.28.4.tgz#a70226016fabe25c5783b2f22d3e1c9bc5ca3326"
   integrity sha512-Q/N6JNWvIvPnLDvjlE1OUBLPQHH6l3CltCEsHIujp45zQUSSh8K+gHnaEX45yAT1nyngnINhvWtzN+Nb9D8RAQ==
@@ -214,6 +214,13 @@
     h3-js "^4.1.0"
     jsep "^1.4.0"
     quadbin "^0.4.1-alpha.0"
+
+"@carto/react-api@^3.1.0-alpha.16":
+  version "3.1.0-alpha.16"
+  resolved "https://registry.yarnpkg.com/@carto/react-api/-/react-api-3.1.0-alpha.16.tgz#31b4628ec20b87528bdfa5f50d196900f6d97fa0"
+  integrity sha512-kipQeeeE9gxvBMiTJGe3SGNHueXeEcP7DVYAfK/EyBudkSs2HuvSGlJto1rgite0J++4qrtxD3pCYlrp+LWQHw==
+  dependencies:
+    "@babel/runtime" "^7.13.9"
 
 "@csstools/color-helpers@^5.1.0":
   version "5.1.0"
