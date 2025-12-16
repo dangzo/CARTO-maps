@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { VectorTileLayer, colorContinuous, colorCategories, colorBins } from '@deck.gl/carto';
 import { useAppSelector } from '@/store/hooks';
 import { hexToRgbA } from '@/utils/colors';
+import { getTilestatsDomain } from '@/utils/tilestats';
 import { storesSource } from '@/data/sources';
 import useQueryDomain from '@/hooks/useQueryDomain';
 import useDataSources from '@/hooks/useDataSources';
@@ -17,6 +18,7 @@ export const INITIAL_VIEW_STATE = {
 export default function useCartoMap() {
   const retailStoreStyles = useAppSelector(state => state.layerControls.layers[0]);
   const tilesetStyles = useAppSelector(state => state.layerControls.layers[1]);
+  const tilesetTilestats = useAppSelector(state => state.dataSources.tilesetTilestats);
 
 
   /**
@@ -34,6 +36,7 @@ export default function useCartoMap() {
     attr: retailStoreStyles.fillBy,
     tableName: storesSource.tableName,
   });
+
 
   /**
    * Fill colors
@@ -68,13 +71,15 @@ export default function useCartoMap() {
         return hexToRgbA(tilesetStyles.fillColor);
       }
 
+      const domain = getTilestatsDomain(tilesetTilestats, tilesetStyles.fillBy, 6);
+
       return colorBins({
         attr: tilesetStyles.fillBy,
-        domain: [0, 100, 200, 300, 400, 500], // TODO: use tileset metadata
+        domain: domain,
         colors: 'Burg',
       });
     },
-    [tilesetStyles.fillBy, tilesetStyles.fillColor]
+    [tilesetStyles.fillBy, tilesetStyles.fillColor, tilesetTilestats]
   );
 
 

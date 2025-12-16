@@ -48,6 +48,7 @@ describe('useQueryDomain hook', () => {
         dataSources: {
           retailStoresSchema: mockSchema,
           tilesetSchema: null,
+          tilesetTilestats: null,
           loading: false,
           error: null,
         },
@@ -73,6 +74,7 @@ describe('useQueryDomain hook', () => {
         dataSources: {
           retailStoresSchema: mockSchema,
           tilesetSchema: null,
+          tilesetTilestats: null,
           loading: false,
           error: null
         }
@@ -103,12 +105,12 @@ describe('useQueryDomain hook', () => {
         dataSources: {
           retailStoresSchema: mockSchema,
           tilesetSchema: null,
+          tilesetTilestats: null,
           loading: false,
           error: null
         }
       }
-    }
-    );
+    });
 
     await waitFor(() => {
       expect(result.current[0]).toEqual(['A', 'B', 'C']);
@@ -134,12 +136,12 @@ describe('useQueryDomain hook', () => {
         dataSources: {
           retailStoresSchema: mockSchema,
           tilesetSchema: null,
+          tilesetTilestats: null,
           loading: false,
           error: null
         }
       }
-    }
-    );
+    });
 
     await waitFor(() => {
       expect(mockCategoriesQuery).toHaveBeenCalledWith('field2', 'test_table', 10);
@@ -159,12 +161,12 @@ describe('useQueryDomain hook', () => {
         dataSources: {
           retailStoresSchema: mockSchema,
           tilesetSchema: null,
+          tilesetTilestats: null,
           loading: false,
           error: null
         }
       }
-    }
-    );
+    });
 
     expect(mockFetchDomain).not.toHaveBeenCalled();
   });
@@ -182,12 +184,12 @@ describe('useQueryDomain hook', () => {
         dataSources: {
           retailStoresSchema: mockSchema,
           tilesetSchema: null,
+          tilesetTilestats: null,
           loading: false,
           error: null
         }
       }
-    }
-    );
+    });
 
     expect(mockFetchDomain).not.toHaveBeenCalled();
   });
@@ -209,12 +211,12 @@ describe('useQueryDomain hook', () => {
         dataSources: {
           retailStoresSchema: mockSchema,
           tilesetSchema: null,
+          tilesetTilestats: null,
           loading: false,
           error: null
         }
       }
-    }
-    );
+    });
 
     await waitFor(() => {
       expect(consoleSpy).toHaveBeenCalledWith(expect.any(Error));
@@ -241,12 +243,12 @@ describe('useQueryDomain hook', () => {
         dataSources: {
           retailStoresSchema: mockSchema,
           tilesetSchema: null,
+          tilesetTilestats: null,
           loading: false,
           error: null
         }
       }
-    }
-    );
+    });
 
     await new Promise(resolve => setTimeout(resolve, 100));
 

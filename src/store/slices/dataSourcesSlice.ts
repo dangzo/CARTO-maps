@@ -10,6 +10,7 @@ import type {
 const initialState: DataSourcesState = {
   retailStoresSchema: null,
   tilesetSchema: null,
+  tilesetTilestats: null,
   loading: false,
   error: null,
 };
@@ -41,6 +42,7 @@ export const fetchDataSourceSchemas = createAsyncThunk(
       return {
         retailStoresSchema: getLayerSchema(retailStores),
         tilesetSchema: getLayerSchema(tileset),
+        tilesetTilestats: tileset.tilestats,
       };
     } catch (error) {
       return rejectWithValue((error as Error).message);
@@ -55,6 +57,7 @@ const dataSourcesSlice = createSlice({
     resetSchemas: (state) => {
       state.retailStoresSchema = null;
       state.tilesetSchema = null;
+      state.tilesetTilestats = null;
       state.error = null;
     },
   },
@@ -70,6 +73,7 @@ const dataSourcesSlice = createSlice({
           state.loading = false;
           state.retailStoresSchema = action.payload.retailStoresSchema;
           state.tilesetSchema = action.payload.tilesetSchema;
+          state.tilesetTilestats = action.payload.tilesetTilestats;
         }
       )
       .addCase(fetchDataSourceSchemas.rejected, (state, action) => {
