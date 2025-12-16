@@ -2,8 +2,9 @@ import { useMemo } from 'react';
 import { VectorTileLayer, colorContinuous, colorBins } from '@deck.gl/carto';
 import { useAppSelector } from '@/store/hooks';
 import { hexToRgbA } from '@/utils/colors';
+import { storesSource } from '@/data/sources';
+import useQueryDomain from '@/hooks/useQueryDomain';
 import useDataSources from '@/hooks/useDataSources';
-import useCartoDomain from '@/hooks/useCartoDomain';
 
 export const INITIAL_VIEW_STATE = {
   longitude: -90,
@@ -29,15 +30,10 @@ export default function useCartoMap() {
    * Domains
    */
 
-  useCartoDomain({
-    attr: tilesetStyles.fillBy,
-    mode: 'bins',
-    bins: 6,
-  });
-
-  const retailsDomain = useCartoDomain({
+  const retailsDomain = useQueryDomain({
     attr: retailStoreStyles.fillBy,
     mode: 'continuous',
+    tableName: storesSource.tableName,
   });
 
 
@@ -52,7 +48,7 @@ export default function useCartoMap() {
       }
       return colorContinuous({
         attr: retailStoreStyles.fillBy,
-        domain: retailsDomain,
+        domain: retailsDomain as [number, number],
         colors: 'Mint',
       });
     },
@@ -66,7 +62,7 @@ export default function useCartoMap() {
       }
       return colorBins({
         attr: tilesetStyles.fillBy,
-        domain: [0, 1000],
+        domain: [0, 10, 20, 40, 60, 80, 100],
         colors: 'Burg'
       });
     },

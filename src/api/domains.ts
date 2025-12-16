@@ -22,20 +22,26 @@ export type CategoriesDomainType = {
 
 export type FetchDomainResponse = (ContinuousDomainType | BinsDomainsType | CategoriesDomainType);
 
-export const fetchDomain = async ({ query }: {
-  query: string;
-}): Promise<FetchDomainResponse> => {
+export const fetchDomain = async ({ query }: { query: string }): Promise<FetchDomainResponse> => {
   const credentials: CredentialsCarto3 = {
     apiVersion: API_VERSIONS.V3,
     apiBaseUrl,
     accessToken,
   };
 
-  const rows: FetchDomainResponse = await executeSQL({
-    connection: 'carto_dw',
-    credentials,
-    query,
-  });
+  let rows: FetchDomainResponse;
+
+  try {
+    rows = await executeSQL({
+      connection: 'carto_dw',
+      credentials,
+      query,
+    });
+  } catch (error) {
+    // Expected to be logged in console
+    console.error('Error fetching domain data:', error); // eslint-disable-line no-console
+    throw error;
+  }
 
   return rows;
 };
