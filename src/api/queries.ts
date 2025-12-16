@@ -8,7 +8,7 @@ export const continuousQuery = (attribute: string, tableName: string) => `
 
 export const categoriesQuery = (attribute: string, tableName: string, limit: number = 10) => `
   SELECT
-    ARRAY_AGG(\`${attribute}\` ORDER BY cnt DESC LIMIT ${limit}) AS domain
+    ARRAY_AGG(\`${attribute}\` ORDER BY cnt DESC LIMIT ${limit}) AS categories
   FROM (
     SELECT
       \`${attribute}\`,

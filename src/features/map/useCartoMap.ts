@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { VectorTileLayer, colorContinuous, colorBins } from '@deck.gl/carto';
+import { VectorTileLayer, colorContinuous, colorCategories, colorBins } from '@deck.gl/carto';
 import { useAppSelector } from '@/store/hooks';
 import { hexToRgbA } from '@/utils/colors';
 import { storesSource } from '@/data/sources';
@@ -30,12 +30,10 @@ export default function useCartoMap() {
    * Domains
    */
 
-  const retailsDomain = useQueryDomain({
+  const [retailsDomain, retailsMode] = useQueryDomain({
     attr: retailStoreStyles.fillBy,
-    mode: 'continuous',
     tableName: storesSource.tableName,
   });
-
 
   /**
    * Fill colors
@@ -46,13 +44,22 @@ export default function useCartoMap() {
       if (retailStoreStyles.fillBy === 'solid_color') {
         return hexToRgbA(retailStoreStyles.fillColor);
       }
+
+      if (retailsMode === 'categories') {
+        return colorCategories({
+          attr: retailStoreStyles.fillBy,
+          domain: retailsDomain as string[],
+          colors: 'Mint',
+        });
+      }
+
       return colorContinuous({
         attr: retailStoreStyles.fillBy,
         domain: retailsDomain as [number, number],
         colors: 'Mint',
       });
     },
-    [retailsDomain, retailStoreStyles.fillBy, retailStoreStyles.fillColor]
+    [retailsDomain, retailsMode, retailStoreStyles.fillBy, retailStoreStyles.fillColor]
   );
 
   const tilesetFillColor = useMemo(
@@ -60,10 +67,11 @@ export default function useCartoMap() {
       if (tilesetStyles.fillBy === 'solid_color') {
         return hexToRgbA(tilesetStyles.fillColor);
       }
+
       return colorBins({
         attr: tilesetStyles.fillBy,
-        domain: [0, 10, 20, 40, 60, 80, 100],
-        colors: 'Burg'
+        domain: [0, 100, 200, 300, 400, 500], // TODO: use tileset metadata
+        colors: 'Burg',
       });
     },
     [tilesetStyles.fillBy, tilesetStyles.fillColor]

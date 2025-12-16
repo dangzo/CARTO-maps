@@ -1,11 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { fetchDomain } from '@/api/domains';
 import { continuousQuery, categoriesQuery } from '@/api/queries';
+import { useAppSelector } from '@/store/hooks';
+import { getModeForField } from '@/utils/domains';
 import type { DomainModeType } from '@/api/domains';
 
 interface UseCartoDomainParams {
   attr: string;
-  mode: DomainModeType;
   limit?: number;
   tableName: string;
 }
@@ -14,13 +15,19 @@ export type DomainsType = Array<number | string>;
 
 export default function useQueryDomain({
   attr,
-  mode,
   limit = 20, // for categories
   tableName,
-}: UseCartoDomainParams): DomainsType {
+}: UseCartoDomainParams): [DomainsType, DomainModeType] {
   const [domain, setDomain] = useState<DomainsType>([]);
+  const [currentMode, setCurrentMode] = useState<DomainModeType>('continuous');
+
+  const retailStoresSchema = useAppSelector(state => state.dataSources.retailStoresSchema);
+
+  const targetMode = useMemo(() => getModeForField(retailStoresSchema, attr), [retailStoresSchema, attr]);
 
   useEffect(() => {
+    let isCancelled = false;
+
     const fetchDomainData = async () => {
       if (!attr || attr === 'solid_color') {
         return;
@@ -29,7 +36,7 @@ export default function useQueryDomain({
       let query = '';
 
       try {
-        if (mode === 'continuous') {
+        if (targetMode === 'continuous') {
           query = continuousQuery(attr, tableName);
         } else {
           query = categoriesQuery(attr, tableName, limit);
@@ -37,21 +44,31 @@ export default function useQueryDomain({
 
         const rows = await fetchDomain({ query });
 
-        if (Array.isArray(rows) && rows.length > 0) {
-          if (mode === 'continuous') {
+        // Only update state if this effect hasn't been cancelled
+        if (!isCancelled && Array.isArray(rows) && rows.length > 0) {
+          if (targetMode === 'continuous') {
             setDomain([rows[0].min, rows[0].max]);
           } else {
             setDomain(rows[0].categories);
           }
+          // Update mode AFTER setting domain
+          setCurrentMode(targetMode);
         }
       } catch (error) {
-        // TODO: Handle error appropriately
-        console.error(error); // eslint-disable-line no-console
+        // Only log error if not cancelled
+        if (!isCancelled) {
+          console.error(error); // eslint-disable-line no-console
+        }
       }
     };
 
     fetchDomainData();
-  }, [attr, mode, limit, tableName]);
 
-  return domain;
+    // Cleanup function to cancel pending updates
+    return () => {
+      isCancelled = true;
+    };
+  }, [attr, targetMode, limit, tableName]);
+
+  return [domain, currentMode];
 }
