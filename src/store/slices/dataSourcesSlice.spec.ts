@@ -1,12 +1,13 @@
 import dataSourcesReducer, { fetchDataSourceSchemas } from './dataSourcesSlice';
 import type { CreateAsyncThunkProps } from './dataSourcesSlice.props';
-import type { SchemaFieldType } from '@carto/api-client';
+import type { Tilestats, SchemaFieldType } from '@carto/api-client';
 
 
 describe('dataSourcesSlice', () => {
   const initialState = {
     retailStoresSchema: null,
     tilesetSchema: null,
+    tilesetTilestats: null,
     loading: false,
     error: null,
   };
@@ -47,6 +48,7 @@ describe('dataSourcesSlice', () => {
         {
           retailStoresSchema,
           tilesetSchema,
+          tilesetTilestats: {} as Tilestats,
         },
         '',
         {} as CreateAsyncThunkProps
