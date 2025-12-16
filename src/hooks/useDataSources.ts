@@ -33,7 +33,8 @@ export default function useDataSources() {
         socioDemographicsData,
       })
     );
-  }, [dispatch, retailStoresData, socioDemographicsData]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return {
     retailStoresData,
