@@ -2,38 +2,27 @@ import { useEffect } from 'react';
 import { vectorTilesetSource, vectorTableSource } from '@carto/api-client';
 import { useAppDispatch } from '@/store/hooks';
 import { fetchDataSourceSchemas } from '@/store/slices/dataSourcesSlice';
+import { storesSource, tilesetSource } from '@/data/sources';
 
 const {
   VITE_API_BASE_URL: apiBaseUrl,
   VITE_API_ACCESS_TOKEN: accessToken
 } = import.meta.env;
 
-interface UseDataSourcesProps {
-  connectionName: string;
-  retailStoresTable: string;
-  socioDemographicsTileset: string;
-}
-
-export default function useDataSources({
-  connectionName,
-  retailStoresTable,
-  socioDemographicsTileset,
-}: UseDataSourcesProps) {
+export default function useDataSources() {
   const dispatch = useAppDispatch();
 
   // Create data sources
   const retailStoresData = vectorTableSource({
     apiBaseUrl,
     accessToken,
-    connectionName,
-    tableName: retailStoresTable,
+    ...storesSource,
   });
 
   const socioDemographicsData = vectorTilesetSource({
     apiBaseUrl,
     accessToken,
-    connectionName,
-    tableName: socioDemographicsTileset,
+    ...tilesetSource,
   });
 
   // Fetch schemas once data sources are available

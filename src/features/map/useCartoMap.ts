@@ -3,6 +3,7 @@ import { VectorTileLayer, colorContinuous, colorBins } from '@deck.gl/carto';
 import { useAppSelector } from '@/store/hooks';
 import { hexToRgbA } from '@/utils/colors';
 import useDataSources from '@/hooks/useDataSources';
+import useCartoDomain from '@/hooks/useCartoDomain';
 
 export const INITIAL_VIEW_STATE = {
   longitude: -90,
@@ -12,22 +13,31 @@ export const INITIAL_VIEW_STATE = {
   bearing: 0,
 };
 
-const connectionMode = 'carto_dw';
-const retailStoresTable = 'carto-demo-data.demo_tables.retail_stores';
 const socioDemographicsTileset = 'carto-demo-data.demo_tilesets.sociodemographics_usa_blockgroup';
 
 export default function useCartoMap() {
   const retailStoreStyles = useAppSelector(state => state.layerControls.layers[0]);
   const socioDemographicsStyles = useAppSelector(state => state.layerControls.layers[1]);
 
-  // Data sources with schema fetching
-  const { retailStoresData, socioDemographicsData } = useDataSources({
-    connectionName: connectionMode,
-    retailStoresTable,
-    socioDemographicsTileset,
+  const { retailStoresData, socioDemographicsData } = useDataSources();
+
+  /**
+   * Domains
+   */
+
+  const socioDomain = useCartoDomain({
+    source: socioDemographicsTileset,
+    attr: socioDemographicsStyles.fillBy,
+    mode: 'bins',
+    bins: 6
   });
 
-  const layer1FillColor = useMemo(
+
+  /**
+   * Fill colors
+   */
+
+  const retailStoresFillColor = useMemo(
     () => {
       if (retailStoreStyles.fillBy === 'solid_color') {
         return hexToRgbA(retailStoreStyles.fillColor ?? '#a00000');
@@ -41,45 +51,54 @@ export default function useCartoMap() {
     [retailStoreStyles.fillBy, retailStoreStyles.fillColor]
   );
 
-  const layer2FillColor = useMemo(
+  const socioDemographicsFillColor = useMemo(
     () => {
       if (socioDemographicsStyles.fillBy === 'solid_color') {
         return hexToRgbA(socioDemographicsStyles.fillColor ?? '#4a00f0');
       }
+
+      if (!socioDomain) {
+        return new Uint8ClampedArray([200, 200, 200, 120]);
+      }
+
       return colorBins({
         attr: socioDemographicsStyles.fillBy,
-        domain: [0, 10000, 20000, 30000, 40000, 50000, 55407],
+        domain: socioDomain,
         colors: 'Burg'
       });
     },
-    [socioDemographicsStyles.fillBy, socioDemographicsStyles.fillColor]
+    [socioDemographicsStyles.fillBy, socioDemographicsStyles.fillColor, socioDomain]
   );
-  // Retail Stores data layer (recreate only when style inputs change)
+
+
+  /**
+   * Layers
+   */
+
   const retailStoresLayer = useMemo(() => new VectorTileLayer({
     id: 'retail-stores-layer',
     data: retailStoresData,
     pointRadiusMinPixels: retailStoreStyles.radius ?? 2,
     getLineColor: hexToRgbA(retailStoreStyles.outlineColor ?? '#000000'),
-    getFillColor: layer1FillColor,
+    getFillColor: retailStoresFillColor,
     lineWidthMinPixels: retailStoreStyles.outlineSize ?? 1,
   }), [
-    layer1FillColor,
+    retailStoresFillColor,
     retailStoresData,
     retailStoreStyles.outlineColor,
     retailStoreStyles.outlineSize,
     retailStoreStyles.radius
   ]);
 
-  // SocioDemographics tileset layer (recreate only when style inputs change)
   const socioDemographicsLayer = useMemo(() => new VectorTileLayer({
     id: 'socio-demographics-layer',
     data: socioDemographicsData,
     pointRadiusMinPixels: socioDemographicsStyles.radius ?? 2,
     getLineColor: hexToRgbA(socioDemographicsStyles.outlineColor ?? '#000000'),
-    getFillColor: layer2FillColor,
+    getFillColor: socioDemographicsFillColor,
     lineWidthMinPixels: socioDemographicsStyles.outlineSize ?? 1,
   }), [
-    layer2FillColor,
+    socioDemographicsFillColor,
     socioDemographicsData,
     socioDemographicsStyles.outlineColor,
     socioDemographicsStyles.outlineSize,
