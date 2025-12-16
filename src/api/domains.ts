@@ -14,10 +14,13 @@ export type ContinuousDomainType = {
   max: number;
 }
 export type BinsDomainsType = {
-  bins: number[] | string[];
+  bins: number[];
+}
+export type CategoriesDomainType = {
+  categories: string[];
 }
 
-export type FetchDomainResponse = (ContinuousDomainType | BinsDomainsType);
+export type FetchDomainResponse = (ContinuousDomainType | BinsDomainsType | CategoriesDomainType);
 
 export const fetchDomain = async ({ query }: {
   query: string;
