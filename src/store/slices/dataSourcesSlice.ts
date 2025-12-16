@@ -1,6 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { DataSourcesState, CreateAsyncThunkProps } from './dataSourcesSlice.props';
-import type { VectorTilesetSourceResponse, SchemaField } from '@carto/api-client';
+import type {
+  VectorTilesetSourceResponse,
+  VectorTableSourceResponse,
+  SchemaField,
+} from '@carto/api-client';
 
 
 const initialState: DataSourcesState = {
@@ -10,15 +14,18 @@ const initialState: DataSourcesState = {
   error: null,
 };
 
-// Helper to extract schema from tilestats response
-const getTilestatsMainLayerSchema = (data: VectorTilesetSourceResponse) => {
-  return data.tilestats?.layers?.[0]?.attributes?.map(field => {
-    return {
-      name: field.attribute,
-      type: field.type.toLowerCase(),
-    } as SchemaField;
-  });
-}
+// Helper to extract a list of fields (name/type) from response
+const getLayerSchema = (data: VectorTilesetSourceResponse | VectorTableSourceResponse) => {
+  if (!data.schema) {
+    return data.tilestats?.layers?.[0]?.attributes?.map(field => {
+      return {
+        name: field.attribute,
+        type: field.type.toLowerCase(),
+      } as SchemaField;
+    });
+  }
+  return data.schema;
+};
 
 export const fetchDataSourceSchemas = createAsyncThunk(
   'dataSources/fetchSchemas',
@@ -32,8 +39,8 @@ export const fetchDataSourceSchemas = createAsyncThunk(
       ]);
 
       return {
-        retailStoresSchema: retailStores.schema || null,
-        socioDemographicsSchema: getTilestatsMainLayerSchema(socioDemographics) || null,
+        retailStoresSchema: getLayerSchema(retailStores),
+        socioDemographicsSchema: getLayerSchema(socioDemographics),
       };
     } catch (error) {
       return rejectWithValue((error as Error).message);

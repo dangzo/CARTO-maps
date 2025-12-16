@@ -3,12 +3,12 @@
  * @param hex - The hex color string (e.g., '#ff5733').
  * @returns A tuple representing the RGB values.
  */
-export const hexToRgb = (hex: string): [number, number, number] => {
+export const hexToRgbA = (hex: string, alpha = 204): [number, number, number, number] => {
   const bigint = parseInt(hex.replace('#', ''), 16);
 
   const r = (bigint >> 16) & 255;
   const g = (bigint >> 8) & 255;
   const b = bigint & 255;
 
-  return [r, g, b];
+  return [r, g, b, alpha];
 };

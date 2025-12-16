@@ -34,37 +34,55 @@ export const LayerControls = ({ title, layerIndex }: LayerControlsProps) => {
 
   function onFillColorChange(event: React.ChangeEvent<HTMLInputElement>) {
     dispatch(
-      updateLayerFillColor({ layerIndex, value: event.target.value }),
+      updateLayerFillColor({
+        layerIndex,
+        value: event.target.value,
+      }),
     );
   }
 
   function onOutlineColorChange(event: React.ChangeEvent<HTMLInputElement>) {
     dispatch(
-      updateLayerOutlineColor({ layerIndex, value: event.target.value }),
+      updateLayerOutlineColor({
+        layerIndex,
+        value: event.target.value,
+      }),
     );
   }
 
   function onOutlineSizeChange(_event: Event, value: number | number[]) {
     dispatch(
-      updateLayerOutlineSize({ layerIndex, value: typeof value === 'number' ? value : value[0] }),
+      updateLayerOutlineSize({
+        layerIndex,
+        value: typeof value === 'number' ? value : value[0],
+      }),
     );
   }
 
   function onRadiusChange(_event: Event, value: number | number[]) {
     dispatch(
-      updateLayerRadius({ layerIndex, value: typeof value === 'number' ? value : value[0] }),
+      updateLayerRadius({
+        layerIndex,
+        value: typeof value === 'number' ? value : value[0],
+      }),
     );
   }
 
   function onFillByChange(event: SelectChangeEvent<string>) {
     dispatch(
-      updateLayerFillBy({ layerIndex, value: event.target.value as string }),
+      updateLayerFillBy({
+        layerIndex,
+        value: event.target.value as string,
+      }),
     );
   }
 
   function onPaletteChange(palette: string) {
     dispatch(
-      updateLayerPalette({ layerIndex, value: palette as PaletteType }),
+      updateLayerPalette({
+        layerIndex,
+        value: palette as PaletteType,
+      }),
     );
   }
 
@@ -87,7 +105,7 @@ export const LayerControls = ({ title, layerIndex }: LayerControlsProps) => {
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          gap: 1.5,
+          gap: 3,
         }}
       >
         <InputLabel id={selectId}>Fill by</InputLabel>
