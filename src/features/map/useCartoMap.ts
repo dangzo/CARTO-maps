@@ -94,6 +94,7 @@ export default function useCartoMap() {
     getLineColor: hexToRgbA(retailStoreStyles.outlineColor),
     getFillColor: retailStoresFillColor,
     lineWidthMinPixels: retailStoreStyles.outlineSize ?? 1,
+    pickable: true,
   }), [
     retailStoresFillColor,
     retailStoresData,
@@ -109,6 +110,7 @@ export default function useCartoMap() {
     getLineColor: hexToRgbA(tilesetStyles.outlineColor),
     getFillColor: tilesetFillColor,
     lineWidthMinPixels: tilesetStyles.outlineSize ?? 1,
+    pickable: true,
   }), [
     tilesetFillColor,
     tilesetData,

@@ -1,13 +1,16 @@
 import { DeckGL } from '@deck.gl/react';
 import useCartoMap from './useCartoMap';
+import useTooltip from './useTooltip';
 
 // Base map
 import { Map } from '@vis.gl/react-maplibre';
 import { BASEMAP } from '@carto/api-client';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
+
 export default function CartoMap () {
   const { layers, initialViewState } = useCartoMap();
+  const { getTooltip } = useTooltip();
 
   return (
     <DeckGL
@@ -15,6 +18,7 @@ export default function CartoMap () {
       initialViewState={initialViewState}
       controller
       layers={layers}
+      getTooltip={getTooltip}
     >
       <Map mapStyle={BASEMAP.POSITRON} />
     </DeckGL>
