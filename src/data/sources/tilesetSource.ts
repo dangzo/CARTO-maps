@@ -1,6 +1,6 @@
 const source = {
   connectionName: 'carto_dw',
-  tableName: 'carto-demo-data.demo_tilesets.osm_buildings',
+  tableName: 'carto-demo-data.demo_tilesets.sociodemographics_usa_blockgroup',
 };
 
 export { source as tilesetSource };

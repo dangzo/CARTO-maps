@@ -13,23 +13,31 @@ export const INITIAL_VIEW_STATE = {
   bearing: 0,
 };
 
-const socioDemographicsTileset = 'carto-demo-data.demo_tilesets.sociodemographics_usa_blockgroup';
-
 export default function useCartoMap() {
   const retailStoreStyles = useAppSelector(state => state.layerControls.layers[0]);
   const socioDemographicsStyles = useAppSelector(state => state.layerControls.layers[1]);
 
+
+  /**
+   * Data Sources
+   */
+
   const { retailStoresData, socioDemographicsData } = useDataSources();
+
 
   /**
    * Domains
    */
 
-  const socioDomain = useCartoDomain({
-    source: socioDemographicsTileset,
+  useCartoDomain({
     attr: socioDemographicsStyles.fillBy,
     mode: 'bins',
-    bins: 6
+    bins: 6,
+  });
+
+  const retailsDomain = useCartoDomain({
+    attr: retailStoreStyles.fillBy,
+    mode: 'continuous',
   });
 
 
@@ -40,34 +48,29 @@ export default function useCartoMap() {
   const retailStoresFillColor = useMemo(
     () => {
       if (retailStoreStyles.fillBy === 'solid_color') {
-        return hexToRgbA(retailStoreStyles.fillColor ?? '#a00000');
+        return hexToRgbA(retailStoreStyles.fillColor);
       }
       return colorContinuous({
         attr: retailStoreStyles.fillBy,
-        domain: [0, 250001],
+        domain: retailsDomain,
         colors: 'Mint',
       });
     },
-    [retailStoreStyles.fillBy, retailStoreStyles.fillColor]
+    [retailsDomain, retailStoreStyles.fillBy, retailStoreStyles.fillColor]
   );
 
   const socioDemographicsFillColor = useMemo(
     () => {
       if (socioDemographicsStyles.fillBy === 'solid_color') {
-        return hexToRgbA(socioDemographicsStyles.fillColor ?? '#4a00f0');
+        return hexToRgbA(socioDemographicsStyles.fillColor);
       }
-
-      if (!socioDomain) {
-        return new Uint8ClampedArray([200, 200, 200, 120]);
-      }
-
       return colorBins({
         attr: socioDemographicsStyles.fillBy,
-        domain: socioDomain,
+        domain: [0, 1000],
         colors: 'Burg'
       });
     },
-    [socioDemographicsStyles.fillBy, socioDemographicsStyles.fillColor, socioDomain]
+    [socioDemographicsStyles.fillBy, socioDemographicsStyles.fillColor]
   );
 
 
@@ -79,7 +82,7 @@ export default function useCartoMap() {
     id: 'retail-stores-layer',
     data: retailStoresData,
     pointRadiusMinPixels: retailStoreStyles.radius ?? 2,
-    getLineColor: hexToRgbA(retailStoreStyles.outlineColor ?? '#000000'),
+    getLineColor: hexToRgbA(retailStoreStyles.outlineColor),
     getFillColor: retailStoresFillColor,
     lineWidthMinPixels: retailStoreStyles.outlineSize ?? 1,
   }), [
@@ -94,7 +97,7 @@ export default function useCartoMap() {
     id: 'socio-demographics-layer',
     data: socioDemographicsData,
     pointRadiusMinPixels: socioDemographicsStyles.radius ?? 2,
-    getLineColor: hexToRgbA(socioDemographicsStyles.outlineColor ?? '#000000'),
+    getLineColor: hexToRgbA(socioDemographicsStyles.outlineColor),
     getFillColor: socioDemographicsFillColor,
     lineWidthMinPixels: socioDemographicsStyles.outlineSize ?? 1,
   }), [
@@ -104,6 +107,7 @@ export default function useCartoMap() {
     socioDemographicsStyles.outlineSize,
     socioDemographicsStyles.radius
   ]);
+
 
   return {
     socioDemographicsData,

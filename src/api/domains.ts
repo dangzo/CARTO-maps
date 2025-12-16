@@ -1,42 +1,38 @@
 import { executeSQL } from '@carto/react-api';
+import { API_VERSIONS } from '@carto/react-api';
+import type { CredentialsCarto3 } from '@carto/react-api/src/types';
 
 const {
   VITE_API_BASE_URL: apiBaseUrl,
   VITE_API_ACCESS_TOKEN: accessToken
 } = import.meta.env;
 
-const CONTINUOUS_QUERY = (attribute: string, tableName: string) => `
-  SELECT
-    MIN(${attribute}) as min_value,
-    MAX(${attribute}) as max_value
-  FROM ${tableName}
-  WHERE ${attribute} IS NOT NULL
-`;
+export type DomainModeType = 'continuous' | 'bins' | 'categories';
 
-const BINS_QUERY = (attribute: string, tableName: string, numBins: number) => `
-  WITH quantiles AS (
-    SELECT
-      APPROX_QUANTILES(${attribute}, ${numBins}) as breaks
-    FROM ${tableName}
-    WHERE ${attribute} IS NOT NULL
-  )
-  SELECT breaks
-  FROM quantiles
-`;
+export type ContinuousDomainType = {
+  min: number;
+  max: number;
+}
+export type BinsDomainsType = {
+  bins: number[] | string[];
+}
+
+export type FetchDomainResponse = (ContinuousDomainType | BinsDomainsType);
 
 export const fetchDomain = async ({ query }: {
   query: string;
-}) => {
-  const credentials = {
+}): Promise<FetchDomainResponse> => {
+  const credentials: CredentialsCarto3 = {
+    apiVersion: API_VERSIONS.V3,
     apiBaseUrl,
     accessToken,
   };
-  const result = await executeSQL({
+
+  const rows: FetchDomainResponse = await executeSQL({
+    connection: 'carto_dw',
     credentials,
     query,
   });
 
-  return result;
+  return rows;
 };
-
-export { CONTINUOUS_QUERY, BINS_QUERY };
