@@ -1,9 +1,11 @@
+import { css } from '@emotion/react';
 import { Box, Stack, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { useMemo } from 'react';
-import { PALETTE_DEFINITIONS, type PaletteSelectorProps } from './PaletteSelector.props';
+import { PALETTES } from '@/data/constants/colors';
+import type { PaletteSelectorProps } from './PaletteSelector.props';
 
 export const PaletteSelector = ({ value, onChange }: PaletteSelectorProps) => {
-  const palettes = useMemo(() => Object.entries(PALETTE_DEFINITIONS), []);
+  const palettes = useMemo(() => Object.entries(PALETTES), []);
 
   return (
     <ToggleButtonGroup
@@ -50,6 +52,8 @@ export const PaletteSelector = ({ value, onChange }: PaletteSelectorProps) => {
               minHeight: '24px',
             }}
           >
+            <span css={css`padding-right: 8px;`}>{paletteName}</span>
+
             {colors.map((color, idx) => (
               <Box
                 key={`${paletteName}-${idx}`}

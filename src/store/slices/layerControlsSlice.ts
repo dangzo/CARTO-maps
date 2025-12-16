@@ -8,7 +8,7 @@ export const INITIAL_LAYER_1_STYLE: LayerStyle = {
   outlineColor: '#1b5e20',
   radius: 3,
   fillBy: 'solid_color',
-  palette: 'yellow',
+  palette: 'Purp',
 };
 
 export const INITIAL_LAYER_2_STYLE: LayerStyle = {
@@ -17,7 +17,7 @@ export const INITIAL_LAYER_2_STYLE: LayerStyle = {
   outlineColor: '#5b1e50',
   radius: 2,
   fillBy: 'solid_color',
-  palette: 'yellow',
+  palette: 'Teal',
 };
 
 const initialState: LayerControlsState = {

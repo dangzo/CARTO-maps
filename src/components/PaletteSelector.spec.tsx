@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { PaletteSelector } from './PaletteSelector';
-import { PALETTE_DEFINITIONS } from './PaletteSelector.props';
+import { PALETTES } from '@/data/constants/colors';
 
 describe('PaletteSelector', () => {
   const mockOnChange = vi.fn();
@@ -12,7 +12,7 @@ describe('PaletteSelector', () => {
   it('renders all palette options', () => {
     render(<PaletteSelector value="" onChange={mockOnChange} />);
 
-    const paletteNames = Object.keys(PALETTE_DEFINITIONS);
+    const paletteNames = Object.keys(PALETTES);
     paletteNames.forEach(paletteName => {
       expect(screen.getByTestId(paletteName)).toBeInTheDocument();
     });
@@ -21,7 +21,7 @@ describe('PaletteSelector', () => {
   it('renders color boxes for each palette', () => {
     render(<PaletteSelector value="" onChange={mockOnChange} />);
 
-    const firstPalette = Object.entries(PALETTE_DEFINITIONS)[0];
+    const firstPalette = Object.entries(PALETTES)[0];
     const [paletteName, colors] = firstPalette;
 
     colors.forEach((_, idx) => {
@@ -33,7 +33,7 @@ describe('PaletteSelector', () => {
   it('calls onChange when a palette is selected', () => {
     render(<PaletteSelector value="" onChange={mockOnChange} />);
 
-    const firstPaletteName = Object.keys(PALETTE_DEFINITIONS)[0];
+    const firstPaletteName = Object.keys(PALETTES)[0];
     const paletteButton = screen.getByTestId(firstPaletteName);
 
     fireEvent.click(paletteButton);
@@ -42,7 +42,7 @@ describe('PaletteSelector', () => {
   });
 
   it('does not call onChange when the same palette is clicked', () => {
-    const selectedPalette = Object.keys(PALETTE_DEFINITIONS)[0];
+    const selectedPalette = Object.keys(PALETTES)[0];
     render(<PaletteSelector value={selectedPalette} onChange={mockOnChange} />);
 
     const paletteButton = screen.getByTestId(selectedPalette);
@@ -52,7 +52,7 @@ describe('PaletteSelector', () => {
   });
 
   it('shows selected palette with correct styling', () => {
-    const selectedPalette = Object.keys(PALETTE_DEFINITIONS)[0];
+    const selectedPalette = Object.keys(PALETTES)[0];
     render(<PaletteSelector value={selectedPalette} onChange={mockOnChange} />);
 
     const paletteButton = screen.getByTestId(selectedPalette);
