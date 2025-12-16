@@ -47,6 +47,9 @@ export function renderHookWithProviders<TProps, TResult>(
     );
   }
 
-  return renderHook(hook, { wrapper: Wrapper,
-    ...renderOptions });
+  return {
+    ...renderHook(hook, { wrapper: Wrapper,
+      ...renderOptions }),
+    store,
+  };
 }

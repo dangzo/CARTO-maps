@@ -1,9 +1,8 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { VectorTileLayer, colorContinuous, colorBins } from '@deck.gl/carto';
-import { vectorTilesetSource, vectorTableSource } from '@carto/api-client';
-import { useAppSelector, useAppDispatch } from '@/store/hooks';
-import { fetchDataSourceSchemas } from '@/store/slices/dataSourcesSlice';
+import { useAppSelector } from '@/store/hooks';
 import { hexToRgbA } from '@/utils/colors';
+import useDataSources from '@/hooks/useDataSources';
 
 export const INITIAL_VIEW_STATE = {
   longitude: -90,
@@ -17,39 +16,16 @@ const connectionMode = 'carto_dw';
 const retailStoresTable = 'carto-demo-data.demo_tables.retail_stores';
 const socioDemographicsTileset = 'carto-demo-data.demo_tilesets.sociodemographics_usa_blockgroup';
 
-const {
-  VITE_API_BASE_URL: apiBaseUrl,
-  VITE_API_ACCESS_TOKEN: accessToken
-} = import.meta.env;
-
 export default function useCartoMap() {
-  const dispatch = useAppDispatch();
   const retailStoreStyles = useAppSelector(state => state.layerControls.layers[0]);
   const socioDemographicsStyles = useAppSelector(state => state.layerControls.layers[1]);
 
-  // Data sources
-  const retailStoresData = vectorTableSource({
-    apiBaseUrl,
-    accessToken,
+  // Data sources with schema fetching
+  const { retailStoresData, socioDemographicsData } = useDataSources({
     connectionName: connectionMode,
-    tableName: retailStoresTable,
+    retailStoresTable,
+    socioDemographicsTileset,
   });
-  const socioDemographicsData = vectorTilesetSource({
-    apiBaseUrl,
-    accessToken,
-    connectionName: connectionMode,
-    tableName: socioDemographicsTileset,
-  });
-
-  // Fetch schemas once data sources are available
-  useEffect(() => {
-    dispatch(
-      fetchDataSourceSchemas({
-        retailStoresData,
-        socioDemographicsData,
-      })
-    );
-  }, [dispatch, retailStoresData, socioDemographicsData]);
 
   const layer1FillColor = useMemo(
     () => {
