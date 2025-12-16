@@ -19,7 +19,7 @@ export default function useDataSources() {
     ...storesSource,
   });
 
-  const socioDemographicsData = vectorTilesetSource({
+  const tilesetData = vectorTilesetSource({
     apiBaseUrl,
     accessToken,
     ...tilesetSource,
@@ -30,7 +30,7 @@ export default function useDataSources() {
     dispatch(
       fetchDataSourceSchemas({
         retailStoresData,
-        socioDemographicsData,
+        tilesetData,
       })
     );
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -38,6 +38,6 @@ export default function useDataSources() {
 
   return {
     retailStoresData,
-    socioDemographicsData,
+    tilesetData,
   };
 };

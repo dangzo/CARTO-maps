@@ -12,7 +12,7 @@ describe('useDataSources', () => {
   const mockProps = {
     connectionName: 'test-connection',
     retailStoresTable: 'retail_stores',
-    socioDemographicsTileset: 'socio_demographics',
+    tilesetTileset: 'socio_demographics',
   };
 
   beforeEach(() => {
@@ -51,6 +51,6 @@ describe('useDataSources', () => {
     const { result } = renderHookWithProviders(() => useDataSources(mockProps));
 
     expect(result.current.retailStoresData).toBe(mockRetailData);
-    expect(result.current.socioDemographicsData).toBe(mockSocioData);
+    expect(result.current.tilesetData).toBe(mockSocioData);
   });
 });

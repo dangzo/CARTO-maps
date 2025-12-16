@@ -15,14 +15,14 @@ export const INITIAL_VIEW_STATE = {
 
 export default function useCartoMap() {
   const retailStoreStyles = useAppSelector(state => state.layerControls.layers[0]);
-  const socioDemographicsStyles = useAppSelector(state => state.layerControls.layers[1]);
+  const tilesetStyles = useAppSelector(state => state.layerControls.layers[1]);
 
 
   /**
    * Data Sources
    */
 
-  const { retailStoresData, socioDemographicsData } = useDataSources();
+  const { retailStoresData, tilesetData } = useDataSources();
 
 
   /**
@@ -30,7 +30,7 @@ export default function useCartoMap() {
    */
 
   useCartoDomain({
-    attr: socioDemographicsStyles.fillBy,
+    attr: tilesetStyles.fillBy,
     mode: 'bins',
     bins: 6,
   });
@@ -59,18 +59,18 @@ export default function useCartoMap() {
     [retailsDomain, retailStoreStyles.fillBy, retailStoreStyles.fillColor]
   );
 
-  const socioDemographicsFillColor = useMemo(
+  const tilesetFillColor = useMemo(
     () => {
-      if (socioDemographicsStyles.fillBy === 'solid_color') {
-        return hexToRgbA(socioDemographicsStyles.fillColor);
+      if (tilesetStyles.fillBy === 'solid_color') {
+        return hexToRgbA(tilesetStyles.fillColor);
       }
       return colorBins({
-        attr: socioDemographicsStyles.fillBy,
+        attr: tilesetStyles.fillBy,
         domain: [0, 1000],
         colors: 'Burg'
       });
     },
-    [socioDemographicsStyles.fillBy, socioDemographicsStyles.fillColor]
+    [tilesetStyles.fillBy, tilesetStyles.fillColor]
   );
 
 
@@ -93,28 +93,28 @@ export default function useCartoMap() {
     retailStoreStyles.radius
   ]);
 
-  const socioDemographicsLayer = useMemo(() => new VectorTileLayer({
+  const tilesetLayer = useMemo(() => new VectorTileLayer({
     id: 'socio-demographics-layer',
-    data: socioDemographicsData,
-    pointRadiusMinPixels: socioDemographicsStyles.radius ?? 2,
-    getLineColor: hexToRgbA(socioDemographicsStyles.outlineColor),
-    getFillColor: socioDemographicsFillColor,
-    lineWidthMinPixels: socioDemographicsStyles.outlineSize ?? 1,
+    data: tilesetData,
+    pointRadiusMinPixels: tilesetStyles.radius ?? 2,
+    getLineColor: hexToRgbA(tilesetStyles.outlineColor),
+    getFillColor: tilesetFillColor,
+    lineWidthMinPixels: tilesetStyles.outlineSize ?? 1,
   }), [
-    socioDemographicsFillColor,
-    socioDemographicsData,
-    socioDemographicsStyles.outlineColor,
-    socioDemographicsStyles.outlineSize,
-    socioDemographicsStyles.radius
+    tilesetFillColor,
+    tilesetData,
+    tilesetStyles.outlineColor,
+    tilesetStyles.outlineSize,
+    tilesetStyles.radius
   ]);
 
 
   return {
-    socioDemographicsData,
+    tilesetData,
     retailStoresData,
     initialViewState: INITIAL_VIEW_STATE,
     layers: [
-      socioDemographicsLayer,
+      tilesetLayer,
       retailStoresLayer,
     ],
   };

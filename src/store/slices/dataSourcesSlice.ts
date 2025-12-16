@@ -9,7 +9,7 @@ import type {
 
 const initialState: DataSourcesState = {
   retailStoresSchema: null,
-  socioDemographicsSchema: null,
+  tilesetSchema: null,
   loading: false,
   error: null,
 };
@@ -29,18 +29,18 @@ const getLayerSchema = (data: VectorTilesetSourceResponse | VectorTableSourceRes
 
 export const fetchDataSourceSchemas = createAsyncThunk(
   'dataSources/fetchSchemas',
-  async ({ retailStoresData, socioDemographicsData }: CreateAsyncThunkProps, {
+  async ({ retailStoresData, tilesetData }: CreateAsyncThunkProps, {
     rejectWithValue,
   }) => {
     try {
-      const [retailStores, socioDemographics] = await Promise.all([
+      const [retailStores, tileset] = await Promise.all([
         retailStoresData,
-        socioDemographicsData,
+        tilesetData,
       ]);
 
       return {
         retailStoresSchema: getLayerSchema(retailStores),
-        socioDemographicsSchema: getLayerSchema(socioDemographics),
+        tilesetSchema: getLayerSchema(tileset),
       };
     } catch (error) {
       return rejectWithValue((error as Error).message);
@@ -54,7 +54,7 @@ const dataSourcesSlice = createSlice({
   reducers: {
     resetSchemas: (state) => {
       state.retailStoresSchema = null;
-      state.socioDemographicsSchema = null;
+      state.tilesetSchema = null;
       state.error = null;
     },
   },
@@ -69,7 +69,7 @@ const dataSourcesSlice = createSlice({
         (state, action) => {
           state.loading = false;
           state.retailStoresSchema = action.payload.retailStoresSchema;
-          state.socioDemographicsSchema = action.payload.socioDemographicsSchema;
+          state.tilesetSchema = action.payload.tilesetSchema;
         }
       )
       .addCase(fetchDataSourceSchemas.rejected, (state, action) => {

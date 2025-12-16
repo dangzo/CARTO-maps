@@ -6,7 +6,7 @@ import type { SchemaFieldType } from '@carto/api-client';
 describe('dataSourcesSlice', () => {
   const initialState = {
     retailStoresSchema: null,
-    socioDemographicsSchema: null,
+    tilesetSchema: null,
     loading: false,
     error: null,
   };
@@ -30,7 +30,7 @@ describe('dataSourcesSlice', () => {
       },
     ];
 
-    const socioDemographicsSchema = [
+    const tilesetSchema = [
       {
         name: 'population',
         type: 'number' as SchemaFieldType,
@@ -46,7 +46,7 @@ describe('dataSourcesSlice', () => {
       fetchDataSourceSchemas.fulfilled(
         {
           retailStoresSchema,
-          socioDemographicsSchema,
+          tilesetSchema,
         },
         '',
         {} as CreateAsyncThunkProps
@@ -55,7 +55,7 @@ describe('dataSourcesSlice', () => {
 
     expect(state.loading).toBe(false);
     expect(state.retailStoresSchema).toEqual(retailStoresSchema);
-    expect(state.socioDemographicsSchema).toEqual(socioDemographicsSchema);
+    expect(state.tilesetSchema).toEqual(tilesetSchema);
   });
 
   it('should handle fetchDataSourceSchemas.rejected', () => {

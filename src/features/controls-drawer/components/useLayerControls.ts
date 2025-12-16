@@ -7,7 +7,7 @@ export default function useLayerControls(layerIndex: LayerControlsProps['layerIn
   const layerSchema = useAppSelector(state => (
     layerIndex === 0
       ? state.dataSources.retailStoresSchema
-      : state.dataSources.socioDemographicsSchema
+      : state.dataSources.tilesetSchema
   ));
 
   // An array of options for the "Fill by" select input

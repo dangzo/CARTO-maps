@@ -2,12 +2,12 @@ import type { VectorTilesetSourceResponse, VectorTableSourceResponse, SchemaFiel
 
 export interface DataSourcesState {
   retailStoresSchema: SchemaField[] | null;
-  socioDemographicsSchema: SchemaField[] | null;
+  tilesetSchema: SchemaField[] | null;
   loading: boolean;
   error: string | null;
 }
 
 export interface CreateAsyncThunkProps {
   retailStoresData: Promise<VectorTableSourceResponse>;
-  socioDemographicsData: Promise<VectorTilesetSourceResponse>;
+  tilesetData: Promise<VectorTilesetSourceResponse>;
 }

@@ -17,16 +17,16 @@ describe('useCartoMap hook', () => {
 
     expect(layers.length).toBe(2);
 
-    // socioDemographicsLayer first, retailStoresLayer second, on top of it
-    const [socioDemographicsLayer, retailStoresLayer] = layers;
+    // tilesetLayer first, retailStoresLayer second, on top of it
+    const [tilesetLayer, retailStoresLayer] = layers;
 
     // Check SocioDemographics Layer
-    expect(socioDemographicsLayer.id).toBe('socio-demographics-layer');
-    expect(socioDemographicsLayer.props).toHaveProperty('data');
-    expect(socioDemographicsLayer.props).toHaveProperty('getFillColor');
-    expect(socioDemographicsLayer.props).toHaveProperty('getLineColor');
-    expect(socioDemographicsLayer.props).toHaveProperty('pointRadiusMinPixels');
-    expect(socioDemographicsLayer.props).toHaveProperty('lineWidthMinPixels');
+    expect(tilesetLayer.id).toBe('socio-demographics-layer');
+    expect(tilesetLayer.props).toHaveProperty('data');
+    expect(tilesetLayer.props).toHaveProperty('getFillColor');
+    expect(tilesetLayer.props).toHaveProperty('getLineColor');
+    expect(tilesetLayer.props).toHaveProperty('pointRadiusMinPixels');
+    expect(tilesetLayer.props).toHaveProperty('lineWidthMinPixels');
 
     // Check Retail Stores Layer
     expect(retailStoresLayer.id).toBe('retail-stores-layer');
