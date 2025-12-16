@@ -7,7 +7,7 @@ const layer1InitialState = {
   fillColor: '#4caf50',
   outlineSize: 1,
   outlineColor: '#1b5e20',
-  radius: 2,
+  radius: 3,
   fillBy: 'Solid color',
 };
 

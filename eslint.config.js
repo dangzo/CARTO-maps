@@ -28,8 +28,8 @@ export default defineConfig([
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
       //
-      'object-property-newline': 'warn',
-      'object-curly-spacing': ['error', 'always'],
+      'object-curly-newline': 'warn',
+      'object-curly-spacing': ['warn', 'always'],
       'no-multi-spaces': 'error',
       "no-unused-vars": "off", // or "@typescript-eslint/no-unused-vars": "off",
         "unused-imports/no-unused-imports": "error",

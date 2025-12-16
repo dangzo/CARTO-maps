@@ -1,5 +1,4 @@
-import { executeSQL } from '@carto/react-api';
-import { API_VERSIONS } from '@carto/react-api';
+import { executeSQL, API_VERSIONS } from '@carto/react-api';
 import type { CredentialsCarto3 } from '@carto/react-api/src/types';
 
 const {
@@ -20,7 +19,7 @@ export type CategoriesDomainType = {
   categories: string[];
 }
 
-export type FetchDomainResponse = (ContinuousDomainType | BinsDomainsType | CategoriesDomainType);
+export type FetchDomainResponse = ContinuousDomainType | BinsDomainsType | CategoriesDomainType;
 
 export const fetchDomain = async ({ query }: { query: string }): Promise<FetchDomainResponse> => {
   const credentials: CredentialsCarto3 = {
@@ -29,10 +28,10 @@ export const fetchDomain = async ({ query }: { query: string }): Promise<FetchDo
     accessToken,
   };
 
-  let rows: FetchDomainResponse;
+  let result: FetchDomainResponse;
 
   try {
-    rows = await executeSQL({
+    result = await executeSQL({
       connection: 'carto_dw',
       credentials,
       query,
@@ -43,5 +42,5 @@ export const fetchDomain = async ({ query }: { query: string }): Promise<FetchDo
     throw error;
   }
 
-  return rows;
+  return result;
 };
