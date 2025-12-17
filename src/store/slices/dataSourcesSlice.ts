@@ -4,6 +4,7 @@ import type {
   VectorTilesetSourceResponse,
   VectorTableSourceResponse,
   SchemaField,
+  SchemaFieldType,
 } from '@carto/api-client';
 
 
@@ -16,14 +17,12 @@ const initialState: DataSourcesState = {
 };
 
 // Helper to extract a list of fields (name/type) from response
-const getLayerSchema = (data: VectorTilesetSourceResponse | VectorTableSourceResponse) => {
+const getLayerSchema = (data: VectorTilesetSourceResponse | VectorTableSourceResponse): SchemaField[] => {
   if (!data.schema) {
-    return data.tilestats?.layers?.[0]?.attributes?.map(field => {
-      return {
-        name: field.attribute,
-        type: field.type.toLowerCase(),
-      } as SchemaField;
-    });
+    return data.tilestats?.layers?.[0]?.attributes?.map(field => ({
+      name: field.attribute,
+      type: field.type.toLowerCase() as SchemaFieldType,
+    })) || [];
   }
   return data.schema;
 };

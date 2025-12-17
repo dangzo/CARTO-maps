@@ -27,7 +27,7 @@ export default function CartoMap () {
     >
       <Map mapStyle={BASEMAP.VOYAGER} />
 
-      <RetailStoresWidget />
+      <RetailStoresWidget retailStoresDataSource={retailStoresDataSource} />
     </DeckGL>
   );
 };

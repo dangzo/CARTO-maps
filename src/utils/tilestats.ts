@@ -22,8 +22,8 @@ export const getTilestatsDomain = (
   }
 
   // Extract min, max, and avg from the field stats
-  const min = field.min as number;
-  const max = field.max as number;
+  const min = field.min;
+  const max = field.max;
 
   if (min === undefined || max === undefined) {
     return [];

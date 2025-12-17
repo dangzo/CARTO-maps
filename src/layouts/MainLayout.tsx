@@ -13,6 +13,22 @@ interface MainLayoutProps {
 export default function MainLayout({ children }: MainLayoutProps) {
   return (
     <Box sx={{ display: 'flex' }}>
+      {/* Right Drawer */}
+      <Drawer
+        variant="permanent"
+        anchor="left"
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          '& .MuiDrawer-paper': {
+            width: drawerWidth,
+            boxSizing: 'border-box',
+          },
+        }}
+      >
+        {children?.drawer}
+      </Drawer>
+
       {/* Main Content */}
       <Box
         component="main"
@@ -25,22 +41,6 @@ export default function MainLayout({ children }: MainLayoutProps) {
       >
         {children?.main}
       </Box>
-
-      {/* Right Drawer */}
-      <Drawer
-        variant="permanent"
-        anchor="right"
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: drawerWidth,
-            boxSizing: 'border-box',
-          },
-        }}
-      >
-        {children?.drawer}
-      </Drawer>
     </Box>
   );
 }
