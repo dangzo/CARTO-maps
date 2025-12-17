@@ -3,11 +3,12 @@ import { screen } from '@testing-library/react';
 import { renderWithProviders } from '@/utils/test-utils';
 
 const initialValues = {
-  fillColor: '#4caf50',
+  fillColor: '#0f87e9',
   outlineSize: 1,
-  outlineColor: '#1b5e20',
+  outlineColor: '#2f3964',
   radius: 3,
-  fillBy: 'Solid color',
+  fillBy: 'solid_color',
+  palette: 'Purp',
 };
 
 describe('LayerControls', () => {
@@ -44,7 +45,7 @@ describe('LayerControls', () => {
       expect(screen.getByLabelText('Outline color')).toHaveValue(initialValues.outlineColor);
       expect(screen.getByLabelText('Outline size')).toHaveValue(initialValues.outlineSize.toString());
       expect(screen.getByLabelText('Radius')).toHaveValue(initialValues.radius.toString());
-      expect(screen.getByLabelText('Fill by')).toHaveTextContent(initialValues.fillBy);
+      expect(screen.getByText('Solid color')).toBeInTheDocument();
     });
   });
 

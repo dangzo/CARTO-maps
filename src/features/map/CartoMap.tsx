@@ -46,7 +46,7 @@ export default function CartoMap () {
       layers={layers}
       getTooltip={getTooltip}
     >
-      <Map mapStyle={BASEMAP.POSITRON} />
+      <Map mapStyle={BASEMAP.VOYAGER} />
     </DeckGL>
   );
 };

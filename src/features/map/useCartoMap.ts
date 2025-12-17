@@ -52,17 +52,17 @@ export default function useCartoMap() {
         return colorCategories({
           attr: retailStoreStyles.fillBy,
           domain: retailsDomain as string[],
-          colors: 'Mint',
+          colors: retailStoreStyles.palette,
         });
       }
 
       return colorContinuous({
         attr: retailStoreStyles.fillBy,
         domain: retailsDomain as [number, number],
-        colors: 'Mint',
+        colors: retailStoreStyles.palette,
       });
     },
-    [retailsDomain, retailsMode, retailStoreStyles.fillBy, retailStoreStyles.fillColor]
+    [retailsDomain, retailsMode, retailStoreStyles.palette, retailStoreStyles.fillBy, retailStoreStyles.fillColor]
   );
 
   const tilesetFillColor = useMemo(
@@ -76,10 +76,10 @@ export default function useCartoMap() {
       return colorBins({
         attr: tilesetStyles.fillBy,
         domain: domain,
-        colors: 'Burg',
+        colors: tilesetStyles.palette,
       });
     },
-    [tilesetStyles.fillBy, tilesetStyles.fillColor, tilesetTilestats]
+    [tilesetStyles.fillBy, tilesetStyles.palette, tilesetStyles.fillColor, tilesetTilestats]
   );
 
 

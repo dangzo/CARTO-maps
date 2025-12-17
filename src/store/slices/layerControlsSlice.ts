@@ -3,18 +3,18 @@ import type { LayerStyle, LayerControlsState, UpdatePayload } from './layerContr
 import type { PaletteType } from '@/components/PaletteSelector.props';
 
 export const INITIAL_LAYER_1_STYLE: LayerStyle = {
-  fillColor: '#4caf50',
+  fillColor: '#0f87e9',
   outlineSize: 1,
-  outlineColor: '#1b5e20',
+  outlineColor: '#2f3964',
   radius: 3,
   fillBy: 'solid_color',
   palette: 'Purp',
 };
 
 export const INITIAL_LAYER_2_STYLE: LayerStyle = {
-  fillColor: '#fcac50',
+  fillColor: '#ffcbbb',
   outlineSize: 1,
-  outlineColor: '#5b1e50',
+  outlineColor: '#754314',
   radius: 2,
   fillBy: 'solid_color',
   palette: 'Teal',
