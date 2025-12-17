@@ -20,7 +20,6 @@ export default function useCartoMap() {
   const tilesetStyles = useAppSelector(state => state.layerControls.layers[1]);
   const tilesetTilestats = useAppSelector(state => state.dataSources.tilesetTilestats);
 
-
   /**
    * Data Sources
    */
