@@ -21,7 +21,7 @@ import {
 } from '@/store/slices/layerControlsSlice';
 import { PaletteSelector } from '@/components/PaletteSelector';
 import useLayerControls from './useLayerControls';
-import type { PaletteType } from '@/components/PaletteSelector.props';
+import type { PaletteType } from '@/components/PaletteSelector.types';
 import type { SelectChangeEvent } from '@mui/material/Select';
 import type { LayerControlsProps } from './LayerControls.props';
 

@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { LayerStyle, LayerControlsState, UpdatePayload } from './layerControlsSlice.props';
-import type { PaletteType } from '@/components/PaletteSelector.props';
+import type { PaletteType } from '@/components/PaletteSelector.types';
 
 export const INITIAL_LAYER_1_STYLE: LayerStyle = {
   fillColor: '#0f87e9',

@@ -1,4 +1,4 @@
-import type { PaletteType } from '@/components/PaletteSelector.props';
+import type { PaletteType } from '@/components/PaletteSelector.types';
 
 export interface LayerStyle {
   fillColor: string;

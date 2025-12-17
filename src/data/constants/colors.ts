@@ -1,4 +1,4 @@
-import type { Palette } from '@/components/PaletteSelector.props';
+import type { Palette } from '@/components/PaletteSelector.types';
 
 export const PALETTES: Palette = {
   Burg: ['#ffc6c4', '#f4a3a8', '#e38191', '#cc607d', '#ad466c', '#8b3058', '#672044'],

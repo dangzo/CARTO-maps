@@ -1,8 +1,8 @@
 import { Provider } from 'react-redux';
 import { store } from './store';
 import MainLayout from './layouts/MainLayout';
-import CartoMap from '@/features/map/CartoMap';
-import ControlsDrawer from '@/features/controls-drawer/ControlsDrawer';
+import CartoMap from '@/components/maps/CartoMap';
+import ControlsDrawer from '@/components/drawer/ControlsDrawer';
 
 function App() {
   return (

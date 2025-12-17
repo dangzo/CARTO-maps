@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import { Box, Stack, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { useMemo } from 'react';
 import { PALETTES } from '@/data/constants/colors';
-import type { PaletteSelectorProps } from './PaletteSelector.props';
+import type { PaletteSelectorProps } from './PaletteSelector.types';
 
 export const PaletteSelector = ({ value, onChange }: PaletteSelectorProps) => {
   const palettes = useMemo(() => Object.entries(PALETTES), []);
