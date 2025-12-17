@@ -89,3 +89,15 @@ The approach I usually use, including this time, is mixing writing code myself w
 In every case, I always double check the generated code, and 99% of the time I refine it at a later stage.
 
 I logged almost all prompts in [prompts.md](./prompts.md).
+
+### What to improve next
+
+Some of the improvements I can think of are:
+
+- better errors handling, perhaps through a snackbar/alert system or error boundaries, as right now the app just logs using `console.error`
+- feature wise, perhaps:
+  - adding/editing layers dynamically, as the drawer right now is already quite busy
+  - include more palettes
+  - store user controls selection on `localStorage`
+  - some more interesting widgets perhaps?
+- adding e2e tests, and perhaps more extensive integration tests

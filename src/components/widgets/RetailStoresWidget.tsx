@@ -54,8 +54,8 @@ export const RetailStoresWidget = ({ retailStoresDataSource }: RetailStoresWidge
     <Card
       sx={{
         position: 'absolute',
-        top: 8,
-        right: 8,
+        top: 12,
+        right: 12,
         minWidth: 280,
         maxWidth: 320,
         backgroundColor: 'white',
