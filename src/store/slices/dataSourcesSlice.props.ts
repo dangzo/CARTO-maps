@@ -10,6 +10,6 @@ export interface DataSourcesState {
 }
 
 export interface CreateAsyncThunkProps {
-  retailStoresData: Promise<VectorTableSourceResponse>;
-  tilesetData: Promise<VectorTilesetSourceResponse>;
+  retailStoresDataSource: Promise<VectorTableSourceResponse>;
+  tilesetDataSource: Promise<VectorTilesetSourceResponse>;
 }

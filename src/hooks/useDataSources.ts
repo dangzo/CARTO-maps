@@ -13,13 +13,13 @@ export default function useDataSources() {
   const dispatch = useAppDispatch();
 
   // Create data sources
-  const retailStoresData = vectorTableSource({
+  const retailStoresDataSource = vectorTableSource({
     apiBaseUrl,
     accessToken,
     ...storesSource,
   });
 
-  const tilesetData = vectorTilesetSource({
+  const tilesetDataSource = vectorTilesetSource({
     apiBaseUrl,
     accessToken,
     ...tilesetSource,
@@ -29,15 +29,15 @@ export default function useDataSources() {
   useEffect(() => {
     dispatch(
       fetchDataSourceSchemas({
-        retailStoresData,
-        tilesetData,
+        retailStoresDataSource,
+        tilesetDataSource,
       })
     );
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return {
-    retailStoresData,
-    tilesetData,
+    retailStoresDataSource,
+    tilesetDataSource,
   };
 };

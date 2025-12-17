@@ -5,7 +5,7 @@ import { hexToRgbA } from '@/utils/colors';
 import { getTilestatsDomain } from '@/utils/tilestats';
 import { storesSource } from '@/data/sources';
 import useQueryDomain from '@/hooks/useQueryDomain';
-import useDataSources from '@/hooks/useDataSources';
+import type { VectorTableSourceResponse, VectorTilesetSourceResponse } from '@carto/api-client';
 
 export const INITIAL_VIEW_STATE = {
   longitude: -90,
@@ -15,17 +15,15 @@ export const INITIAL_VIEW_STATE = {
   bearing: 0,
 };
 
-export default function useCartoMap() {
+interface UseCartoMapProps {
+  retailStoresDataSource: Promise<VectorTableSourceResponse>;
+  tilesetDataSource: Promise<VectorTilesetSourceResponse>;
+}
+
+export default function useCartoMap({ retailStoresDataSource, tilesetDataSource }: UseCartoMapProps) {
   const retailStoreStyles = useAppSelector(state => state.layerControls.layers[0]);
   const tilesetStyles = useAppSelector(state => state.layerControls.layers[1]);
   const tilesetTilestats = useAppSelector(state => state.dataSources.tilesetTilestats);
-
-  /**
-   * Data Sources
-   */
-
-  const { retailStoresData, tilesetData } = useDataSources();
-
 
   /**
    * Domains
@@ -38,7 +36,7 @@ export default function useCartoMap() {
 
 
   /**
-   * Fill colors
+   * Fill colors, based on selected "fill by" style and attribute domain
    */
 
   const retailStoresFillColor = useMemo(
@@ -88,7 +86,7 @@ export default function useCartoMap() {
 
   const retailStoresLayer = useMemo(() => new VectorTileLayer({
     id: 'retail-stores-layer',
-    data: retailStoresData,
+    data: retailStoresDataSource,
     pointRadiusMinPixels: retailStoreStyles.radius ?? 2,
     getLineColor: hexToRgbA(retailStoreStyles.outlineColor),
     getFillColor: retailStoresFillColor,
@@ -96,7 +94,7 @@ export default function useCartoMap() {
     pickable: true,
   }), [
     retailStoresFillColor,
-    retailStoresData,
+    retailStoresDataSource,
     retailStoreStyles.outlineColor,
     retailStoreStyles.outlineSize,
     retailStoreStyles.radius
@@ -104,7 +102,7 @@ export default function useCartoMap() {
 
   const tilesetLayer = useMemo(() => new VectorTileLayer({
     id: 'socio-demographics-layer',
-    data: tilesetData,
+    data: tilesetDataSource,
     pointRadiusMinPixels: tilesetStyles.radius ?? 2,
     getLineColor: hexToRgbA(tilesetStyles.outlineColor),
     getFillColor: tilesetFillColor,
@@ -112,7 +110,7 @@ export default function useCartoMap() {
     pickable: true,
   }), [
     tilesetFillColor,
-    tilesetData,
+    tilesetDataSource,
     tilesetStyles.outlineColor,
     tilesetStyles.outlineSize,
     tilesetStyles.radius
@@ -120,8 +118,8 @@ export default function useCartoMap() {
 
 
   return {
-    tilesetData,
-    retailStoresData,
+    tilesetDataSource,
+    retailStoresDataSource,
     initialViewState: INITIAL_VIEW_STATE,
     layers: [
       tilesetLayer,

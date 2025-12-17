@@ -22,6 +22,7 @@ describe('useDataSources', () => {
     expect(mockVectorTableSource).toHaveBeenCalledWith({
       apiBaseUrl: expect.any(String),
       accessToken: expect.any(String),
+      id: expect.any(String),
       connectionName: storesSource.connectionName,
       tableName: storesSource.tableName,
     });
@@ -29,6 +30,7 @@ describe('useDataSources', () => {
     expect(mockVectorTilesetSource).toHaveBeenCalledWith({
       apiBaseUrl: expect.any(String),
       accessToken: expect.any(String),
+      id: expect.any(String),
       connectionName: tilesetSource.connectionName,
       tableName: tilesetSource.tableName,
     });
@@ -45,7 +47,7 @@ describe('useDataSources', () => {
 
     const { result } = renderHookWithProviders(() => useDataSources());
 
-    expect(result.current.retailStoresData).toBe(mockRetailData);
-    expect(result.current.tilesetData).toBe(mockTilesetData);
+    expect(result.current.retailStoresDataSource).toBe(mockRetailData);
+    expect(result.current.tilesetDataSource).toBe(mockTilesetData);
   });
 });

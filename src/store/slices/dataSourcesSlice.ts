@@ -30,13 +30,13 @@ const getLayerSchema = (data: VectorTilesetSourceResponse | VectorTableSourceRes
 
 export const fetchDataSourceSchemas = createAsyncThunk(
   'dataSources/fetchSchemas',
-  async ({ retailStoresData, tilesetData }: CreateAsyncThunkProps, {
+  async ({ retailStoresDataSource, tilesetDataSource }: CreateAsyncThunkProps, {
     rejectWithValue,
   }) => {
     try {
       const [retailStores, tileset] = await Promise.all([
-        retailStoresData,
-        tilesetData,
+        retailStoresDataSource,
+        tilesetDataSource,
       ]);
 
       return {

@@ -5,10 +5,16 @@ import useTooltip from '@/hooks/useTooltips';
 import { Map } from '@vis.gl/react-maplibre';
 import { BASEMAP } from '@carto/api-client';
 import 'maplibre-gl/dist/maplibre-gl.css';
+// Widgets
+import { RetailStoresWidget } from '@/components/widgets/RetailStoresWidget';
+import useDataSources from '@/hooks/useDataSources';
 
 
 export default function CartoMap () {
-  const { layers, initialViewState } = useCartoMap();
+  // init data sources
+  const { retailStoresDataSource, tilesetDataSource } = useDataSources();
+  // init layers
+  const { layers, initialViewState } = useCartoMap({ retailStoresDataSource, tilesetDataSource });
   const { getTooltip } = useTooltip();
 
   return (
@@ -20,6 +26,8 @@ export default function CartoMap () {
       getTooltip={getTooltip}
     >
       <Map mapStyle={BASEMAP.VOYAGER} />
+
+      <RetailStoresWidget />
     </DeckGL>
   );
 };
