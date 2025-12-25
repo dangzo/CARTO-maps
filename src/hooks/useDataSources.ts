@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { vectorTilesetSource, vectorTableSource } from '@carto/api-client';
 import { useAppDispatch } from '@/store/hooks';
 import { fetchDataSourceSchemas } from '@/store/slices/dataSourcesSlice';
@@ -13,18 +13,16 @@ export default function useDataSources() {
   const dispatch = useAppDispatch();
 
   // Create data sources
-  const retailStoresDataSource = vectorTableSource({
+  const retailStoresDataSource = useMemo(() => vectorTableSource({
     apiBaseUrl,
     accessToken,
     ...storesSource,
-  });
-
-  const tilesetDataSource = vectorTilesetSource({
+  }), []);
+  const tilesetDataSource = useMemo(() => vectorTilesetSource({
     apiBaseUrl,
     accessToken,
     ...tilesetSource,
-  });
-
+  }), []);
   // Fetch schemas once data sources are available
   useEffect(() => {
     dispatch(
