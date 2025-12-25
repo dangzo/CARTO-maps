@@ -118,8 +118,6 @@ export default function useCartoMap({ retailStoresDataSource, tilesetDataSource 
 
 
   return {
-    tilesetDataSource,
-    retailStoresDataSource,
     initialViewState: INITIAL_VIEW_STATE,
     layers: [
       tilesetLayer,
